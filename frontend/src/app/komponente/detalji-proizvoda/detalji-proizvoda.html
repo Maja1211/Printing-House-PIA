@@ -1,0 +1,160 @@
+<div class="public-product-page">
+
+  <nav class="page-nav page-nav--public" aria-label="Javni meni">
+    <a href="/">Početna</a>
+    <a href="/login">Prijava</a>
+    <a href="/registracija">Registracija</a>
+  </nav>
+
+
+  <div class="product-breadcrumb">
+    Početna
+    <span>/</span>
+    Proizvodi
+    <span>/</span>
+    {{proizvod.naziv}}
+  </div>
+
+
+  <section class="product-showcase product-showcase--public">
+
+    <div class="product-showcase__media">
+
+      <span class="product-showcase__category">
+        {{proizvod.kategorija}}
+      </span>
+
+
+      <div class="product-gallery">
+
+        <div class="product-showcase__image-stage">
+
+          @if (izabranaSlika != "") {
+
+            <img
+              [src]="'http://localhost:4000/uploads/' + izabranaSlika"
+              [alt]="proizvod.naziv"
+            >
+
+          }
+
+        </div>
+
+
+        @if (slike.length > 1) {
+
+          <div class="product-thumbnails">
+
+            @for (slika of slike; track slika) {
+
+              <button
+                class="product-thumbnail"
+                [class.product-thumbnail--active]="slika == izabranaSlika"
+                (click)="izaberiSliku(slika)"
+              >
+
+                <img
+                  [src]="'http://localhost:4000/uploads/' + slika"
+                  [alt]="proizvod.naziv"
+                >
+
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="product-showcase__media-note">
+
+        @if (slike.length > 1) {
+          Kliknite na manju sliku da je uvećate
+        }
+        @else {
+          Glavna slika proizvoda
+        }
+
+      </div>
+
+    </div>
+
+
+    <div class="product-showcase__content">
+
+      <span class="section-kicker">
+        Detalji proizvoda
+      </span>
+
+      <h1>
+        {{proizvod.naziv}}
+      </h1>
+
+      <p class="product-showcase__supplier">
+        Nudi
+        <strong>{{proizvod.nazivStamparije}}</strong>
+        ·
+        {{grad}}
+      </p>
+
+
+      <div class="public-product-stats">
+
+        <div>
+          <span>Sviđanja</span>
+          <strong>{{proizvod.brojLajkova}}</strong>
+        </div>
+
+        <div>
+          <span>Nesviđanja</span>
+          <strong>{{proizvod.brojDislajkova}}</strong>
+        </div>
+
+        <div>
+          <span>Lokacija</span>
+          <strong>{{grad}}</strong>
+        </div>
+
+      </div>
+
+
+      <div class="product-showcase__callout">
+
+        <strong>
+          Želite da naručite ovaj proizvod?
+        </strong>
+
+        <p>
+          Prijavite se da biste vidjeli cijenu, boje,
+          dostupne usluge štampe i dodali proizvod u korpu.
+        </p>
+
+      </div>
+
+
+      <div class="actions product-showcase__actions">
+
+        <button
+          class="secondary"
+          (click)="nazad()"
+        >
+          Nazad na ponudu
+        </button>
+
+        <a
+          class="btn btn-primary"
+          href="/login"
+        >
+          Prijavi se za naručivanje
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

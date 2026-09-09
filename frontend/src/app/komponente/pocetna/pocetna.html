@@ -1,0 +1,334 @@
+<div class="home-page">
+<nav class="page-nav page-nav--public" aria-label="Javni meni">
+  <a class="active-link" href="/">Početna</a>
+  <a href="/login">Prijava</a>
+  <a href="/registracija">Registracija</a>
+</nav>
+
+<section class="hero hero--marketplace">
+  <div class="hero__content">
+    <div class="hero__topline">
+      <span class="hero__eyebrow">PRINTING HOUSE</span>
+      <span class="hero__availability">
+        <span class="hero__availability-dot"></span>
+        {{brojStamparija}} aktivne štamparije
+      </span>
+    </div>
+
+    <h1 class="hero__title">Od ideje do štampe, na jednom mjestu.</h1>
+
+    <p class="hero__text">
+      Pregledajte ponudu više štamparija, pronađite proizvod i pripremite
+      personalizovanu narudžbinu kroz nekoliko jednostavnih koraka.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn btn-primary" href="/login">Prijavi se</a>
+      <a class="btn btn-secondary" href="/registracija">Kreiraj nalog</a>
+    </div>
+
+    <div class="hero__benefits" aria-label="Prednosti platforme">
+      <span>✓ Više štamparija</span>
+      <span>✓ Personalizovana štampa</span>
+      <span>✓ Pregled ponude bez prijave</span>
+    </div>
+  </div>
+
+  <aside
+    id="pretraga"
+    class="hero-search"
+    aria-label="Brza pretraga proizvoda"
+  >
+
+    <div class="hero-search__header">
+      <span class="hero-search__kicker">Brza pretraga</span>
+      <h2>Šta želite da odštampate?</h2>
+      <p>Pretražite proizvode po nazivu i kategoriji.</p>
+    </div>
+
+    <div class="hero-search__form">
+
+      <div class="form-field">
+        <label for="nazivPretraga">Naziv proizvoda</label>
+
+        <input
+          id="nazivPretraga"
+          type="text"
+          [(ngModel)]="naziv"
+          placeholder="npr. Polo majica"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="kategorijaPretraga">Kategorija</label>
+
+        <select
+          id="kategorijaPretraga"
+          [(ngModel)]="kategorija"
+        >
+
+          <option value="">
+            Sve kategorije
+          </option>
+
+          @for (kat of kategorije; track kat) {
+
+            <option [value]="kat">
+              {{kat}}
+            </option>
+
+          }
+
+        </select>
+      </div>
+
+      <button
+        class="primary hero-search__button"
+        (click)="pretraga()"
+      >
+        Pretraži proizvode
+      </button>
+
+    </div>
+
+    <div class="hero-search__footer">
+      <strong>{{brojStamparija}}</strong>
+      <span>štamparije trenutno dostupne na platformi</span>
+    </div>
+
+  </aside>
+</section>
+
+
+<section class="section home-section">
+
+  <div class="section-header section-header--home">
+
+    <div>
+      <span class="section-kicker">
+        Najpopularnije
+      </span>
+
+      <h2 class="section-title section-title--large">
+        Najbolje ocijenjeni proizvodi
+      </h2>
+
+      <p class="section-note">
+        Pet proizvoda sa najvećim brojem sviđanja korisnika.
+      </p>
+    </div>
+
+    <a
+      class="text-link"
+      href="#pretraga"
+      (click)="skociNaSekciju('pretraga', $event)"
+    >
+      Pronađi drugi proizvod →
+    </a>
+
+  </div>
+
+
+  @if (proizvodi.length > 0) {
+
+    <div class="product-grid product-grid--featured">
+
+      @for (
+        proizvod of proizvodi;
+        track proizvod.sifra;
+        let i = $index
+      ) {
+
+        <article class="product-card product-card--featured">
+
+          <div class="product-card__media">
+
+            <span class="rank-badge">
+              #{{i + 1}}
+            </span>
+
+            @if (proizvod.slikaUrl != "") {
+
+              <img
+                [src]="'http://localhost:4000/uploads/' + proizvod.slikaUrl"
+                [alt]="proizvod.naziv"
+              >
+
+            }
+
+          </div>
+
+
+          <div class="product-card__body">
+
+            <div class="product-card__rating">
+              ♥ {{proizvod.brojLajkova}} sviđanja
+            </div>
+
+            <h3 class="product-card__title">
+              {{proizvod.naziv}}
+            </h3>
+
+            <p class="product-card__meta">
+              {{proizvod.nazivStamparije}}
+            </p>
+
+            <div class="product-card__footer">
+
+              <span class="product-card__price">
+                {{proizvod.jedinicnaCena}} RSD
+              </span>
+
+              <button
+                class="secondary product-card__details"
+                (click)="detalji(proizvod.sifra)"
+              >
+                Detalji
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="empty-state">
+      Trenutno nema proizvoda za prikaz.
+    </div>
+
+  }
+
+</section>
+
+
+<section
+  id="rezultati"
+  class="section home-section home-section--search-results"
+>
+
+  @if (rezultati.length > 0) {
+
+    <div class="section-header section-header--home">
+
+      <div>
+
+        <span class="section-kicker">
+          Rezultati
+        </span>
+
+        <h2 class="section-title section-title--large">
+          Pronađeni proizvodi
+        </h2>
+
+        <p class="section-note">
+          Klikom na naziv kolone mijenjate redoslijed sortiranja.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrap table-wrap--premium">
+
+      <table class="data-table">
+
+        <thead>
+
+          <tr>
+            <th>Slika</th>
+
+            <th
+              class="sortable"
+              (click)="sortirajPoNazivu()"
+            >
+              Naziv proizvoda ↕
+            </th>
+
+            <th>Kategorija</th>
+            <th>Štamparija</th>
+            <th>Cijena</th>
+            <th></th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            proizvod of rezultati;
+            track proizvod.sifra
+          ) {
+
+            <tr>
+
+              <td>
+
+                @if (proizvod.slikaUrl != "") {
+
+                  <img
+                    class="table-image"
+                    [src]="'http://localhost:4000/uploads/' + proizvod.slikaUrl"
+                    [alt]="proizvod.naziv"
+                  >
+
+                }
+
+              </td>
+
+              <td>
+                <strong>
+                  {{proizvod.naziv}}
+                </strong>
+              </td>
+
+              <td>
+                <span class="badge">
+                  {{proizvod.kategorija}}
+                </span>
+              </td>
+
+              <td>
+                {{proizvod.nazivStamparije}}
+              </td>
+
+              <td>
+                <strong>
+                  {{proizvod.jedinicnaCena}} RSD
+                </strong>
+              </td>
+
+              <td>
+
+                <button
+                  class="secondary"
+                  (click)="detalji(proizvod.sifra)"
+                >
+                  DETALJI
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</section>
+</div>

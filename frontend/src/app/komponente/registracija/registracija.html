@@ -1,0 +1,167 @@
+<div class="registration-page">
+  <nav class="page-nav page-nav--public" aria-label="Javni meni">
+    <a href="/">Početna</a>
+    <a href="/login">Prijava</a>
+    <a class="active-link" href="/registracija">Registracija</a>
+  </nav>
+
+  <header class="page-hero page-hero--compact">
+    <div>
+      <span class="section-kicker">Novi nalog</span>
+      <h1 class="page-title">Registracija</h1>
+      <p class="page-subtitle">Kreirajte nalog klijenta ili štamparije. Nakon slanja zahtjev čeka odobrenje administratora.</p>
+    </div>
+    <div class="page-hero__badge">3 koraka</div>
+  </header>
+
+  <div class="registration-layout">
+    <aside class="registration-aside">
+      <div class="registration-aside__block">
+        <span class="registration-aside__number">01</span>
+        <div>
+          <strong>Izaberite tip naloga</strong>
+          <p>Klijent može biti fizičko ili pravno lice, dok štamparija ima podatke institucije.</p>
+        </div>
+      </div>
+
+      <div class="registration-aside__block">
+        <span class="registration-aside__number">02</span>
+        <div>
+          <strong>Unesite ispravne podatke</strong>
+          <p>Lozinka ima 8–12 znakova, počinje slovom i sadrži veliko slovo, broj i specijalni znak.</p>
+        </div>
+      </div>
+
+      <div class="registration-aside__block">
+        <span class="registration-aside__number">03</span>
+        <div>
+          <strong>Sačekajte odobrenje</strong>
+          <p>Nakon registracije nalog postaje aktivan tek kada administrator prihvati zahtjev.</p>
+        </div>
+      </div>
+
+      <div class="registration-photo-note">
+        <strong>Profilna slika</strong>
+        <span>JPG / PNG / GIF</span>
+        <span>100×100 do 250×250 px</span>
+      </div>
+    </aside>
+
+    <section class="form-card registration-form-card">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Podaci naloga</span>
+          <h2 class="section-title">Osnovni podaci</h2>
+          <p class="section-note">Popunite formu podacima korisnika koji će koristiti sistem.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="tipKorisnika">Tip korisnika</label>
+          <select id="tipKorisnika" [(ngModel)]="tip">
+            <option value="klijent">Klijent</option>
+            <option value="stampar">Štampar</option>
+          </select>
+        </div>
+
+        @if (tip == "klijent") {
+          <div class="form-field">
+            <label for="vrstaKlijenta">Vrsta klijenta</label>
+            <select id="vrstaKlijenta" [(ngModel)]="vrstaKlijenta">
+              <option value="fizicko">Fizičko lice</option>
+              <option value="pravno">Pravno lice</option>
+            </select>
+          </div>
+        }
+
+        <div class="form-field">
+          <label for="regKorIme">Korisničko ime</label>
+          <input id="regKorIme" type="text" [(ngModel)]="kor_ime" placeholder="Jedinstveno korisničko ime">
+        </div>
+
+        <div class="form-field">
+          <label for="regLozinka">Lozinka</label>
+          <input id="regLozinka" type="password" [(ngModel)]="lozinka" placeholder="8–12 znakova">
+        </div>
+
+        <div class="form-field">
+          <label for="regIme">Ime</label>
+          <input id="regIme" type="text" [(ngModel)]="ime">
+        </div>
+
+        <div class="form-field">
+          <label for="regPrezime">Prezime</label>
+          <input id="regPrezime" type="text" [(ngModel)]="prezime">
+        </div>
+
+        <div class="form-field">
+          <label for="regTelefon">Telefon</label>
+          <input id="regTelefon" type="text" [(ngModel)]="telefon" placeholder="Kontakt telefon">
+        </div>
+
+        <div class="form-field">
+          <label for="regEmail">E-mail</label>
+          <input id="regEmail" type="email" [(ngModel)]="email" placeholder="ime@primjer.com">
+        </div>
+      </div>
+
+      @if (vrstaKlijenta == "pravno" || tip == "stampar") {
+        <div class="form-divider">
+          <span>Podaci o instituciji</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="regInstitucija">Naziv institucije</label>
+            <input id="regInstitucija" type="text" [(ngModel)]="nazivInstitucije">
+          </div>
+
+          <div class="form-field">
+            <label for="regGrad">Grad</label>
+            <input id="regGrad" type="text" [(ngModel)]="grad">
+          </div>
+
+          <div class="form-field form-field--full">
+            <label for="regAdresa">Adresa sjedišta</label>
+            <input id="regAdresa" type="text" [(ngModel)]="adresa">
+          </div>
+
+          <div class="form-field">
+            <label for="regMaticni">Matični broj</label>
+            <input id="regMaticni" type="text" [(ngModel)]="maticniBroj" maxlength="8" placeholder="8 cifara">
+          </div>
+
+          <div class="form-field">
+            <label for="regPib">PIB</label>
+            <input id="regPib" type="text" [(ngModel)]="pib" maxlength="9" placeholder="9 cifara">
+          </div>
+        </div>
+      }
+
+      <div class="form-divider">
+        <span>Profilna slika</span>
+      </div>
+
+      <div class="upload-panel">
+        <div>
+          <strong>Dodajte profilnu sliku</strong>
+          <p>Ako sliku ne izaberete, sistem koristi podrazumijevanu profilnu sliku.</p>
+        </div>
+        <input
+          id="regSlika"
+          type="file"
+          accept=".jpg,.jpeg,.png,.gif"
+          (change)="izabranaSlika($event)"
+        >
+      </div>
+
+      <div class="actions registration-actions">
+        <button class="primary" (click)="registracija()">Pošalji zahtjev za registraciju</button>
+        <a class="btn btn-secondary" href="/login">Već imam nalog</a>
+      </div>
+
+      <p class="message">{{poruka}}</p>
+    </section>
+  </div>
+</div>

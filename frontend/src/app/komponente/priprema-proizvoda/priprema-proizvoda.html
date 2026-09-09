@@ -1,0 +1,296 @@
+<div class="prep-page">
+
+  <header class="page-header page-header--product">
+
+    <div>
+
+      <span class="section-kicker">
+        KORAK 2 / PRIPREMA
+      </span>
+
+      <h1 class="page-title">
+        Pripremite proizvod za štampu
+      </h1>
+
+      <p class="page-subtitle">
+        Unesite tekst ili dodajte sliku koju želite da odštampate.
+      </p>
+
+    </div>
+
+    <span class="badge">
+      {{proizvod.sifra}}
+    </span>
+
+  </header>
+
+
+  <nav
+    class="page-nav page-nav--dashboard"
+    aria-label="Klijentski meni"
+  >
+
+    <a href="/klijent">
+      Profil
+    </a>
+
+    <a
+      class="active-link"
+      href="/pretraga-klijent"
+    >
+      Proizvodi
+    </a>
+
+    <a href="/korpa">
+      Korpa
+    </a>
+
+    <a href="/arhiva-klijent">
+      Arhiva
+    </a>
+
+    @if (vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">
+        Javne nabavke
+      </a>
+    }
+
+    <button
+      class="nav-logout"
+      (click)="odjava()"
+    >
+      Odjava
+    </button>
+
+  </nav>
+
+
+  <section class="prep-workspace">
+
+    <div class="prep-preview">
+
+      <div class="prep-preview__top">
+
+        <span class="badge">
+          Pregled proizvoda
+        </span>
+
+        <span class="muted">
+          {{proizvod.nazivStamparije}}
+        </span>
+
+      </div>
+
+
+      <div class="print-preview-stage">
+
+        @if (proizvod.slikaUrl != "") {
+
+          <img
+            class="print-preview-product"
+            [src]="'http://localhost:4000/uploads/' + proizvod.slikaUrl"
+            [alt]="proizvod.naziv"
+          >
+
+        }
+
+
+        @if (slikaZaStampu != "") {
+
+          <img
+            class="print-overlay-image"
+            [src]="slikaZaStampu"
+            alt="Slika za štampu"
+          >
+
+        }
+
+
+        @if (tekstZaStampu.trim() != "") {
+
+          <div class="print-overlay-text">
+            {{tekstZaStampu}}
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="prep-preview__caption">
+
+        <h2>
+          {{proizvod.naziv}}
+        </h2>
+
+        <p>
+          Odabrana boja:
+          <strong>{{boja}}</strong>
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="prep-config">
+
+      <span class="section-kicker">
+        Konfiguracija narudžbine
+      </span>
+
+      <h2>
+        Priprema za štampu
+      </h2>
+
+      <p class="muted">
+        Unesite tekst, sliku ili oboje i odmah pogledajte prikaz na proizvodu.
+      </p>
+
+
+      <div class="prep-summary-grid">
+
+        <div>
+          <span>Boja</span>
+          <strong>{{boja}}</strong>
+        </div>
+
+
+        @if (usluga != null) {
+
+          <div>
+            <span>Vrsta štampe</span>
+            <strong>
+              {{usluga.tipStampe}}
+            </strong>
+          </div>
+
+
+          <div>
+            <span>Dodatna cijena</span>
+            <strong>
+              +{{usluga.dodatnaCenaPoKomadu}} RSD
+            </strong>
+          </div>
+
+        }
+
+
+        <div>
+          <span>Na stanju</span>
+          <strong>
+            {{proizvod.kolicinaNaLageru}} kom.
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="prep-form">
+
+        <div class="form-field">
+
+          <label for="tekstZaStampu">
+            Tekst za štampu
+          </label>
+
+          <input
+            id="tekstZaStampu"
+            type="text"
+            [(ngModel)]="tekstZaStampu"
+            placeholder="npr. ETF 2026"
+          >
+
+        </div>
+
+
+        <div class="form-field">
+
+          <label for="slikaZaStampu">
+            Slika za štampu
+          </label>
+
+          <input
+            id="slikaZaStampu"
+            type="file"
+            accept=".jpg,.jpeg,.png,.gif"
+            (change)="izabranaSlikaZaStampu($event)"
+          >
+
+          <span class="field-help">
+            JPG, PNG ili GIF.
+          </span>
+
+        </div>
+
+
+        @if (nazivSlikeZaStampu != "") {
+
+          <p class="selected-file">
+            Izabrana slika:
+            <strong>
+              {{nazivSlikeZaStampu}}
+            </strong>
+          </p>
+
+        }
+
+
+        <div class="form-field">
+
+          <label for="kolicinaProizvoda">
+            Količina
+          </label>
+
+          <input
+            id="kolicinaProizvoda"
+            type="number"
+            min="1"
+            [(ngModel)]="kolicina"
+          >
+
+          <span class="field-help">
+            Maksimalno dostupno:
+            {{proizvod.kolicinaNaLageru}}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="actions prep-actions">
+
+        <button
+          class="primary"
+          (click)="dodajUKorpu()"
+        >
+          Dodaj u korpu
+        </button>
+
+        <button
+          class="secondary"
+          (click)="ponisti()"
+        >
+          Poništi
+        </button>
+
+        <button
+          class="secondary"
+          (click)="nazad()"
+        >
+          Nazad
+        </button>
+
+      </div>
+
+
+      <p class="message">
+        {{poruka}}
+      </p>
+
+    </div>
+
+  </section>
+
+</div>

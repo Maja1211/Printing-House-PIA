@@ -1,0 +1,322 @@
+<div class="client-page">
+  <header class="dashboard-hero dashboard-hero--client">
+    <div>
+      <span class="section-kicker">KLIJENTSKI PANEL</span>
+      <h1 class="page-title">Dobro došli, {{korisnik.ime}}.</h1>
+      <p class="page-subtitle">Upravljajte profilom, pregledajte proizvode i pratite svoje narudžbine na jednom mjestu.</p>
+    </div>
+
+    <div class="dashboard-hero__identity">
+      @if (korisnik.slika != "") {
+        <img
+          class="dashboard-hero__avatar"
+          [src]="'http://localhost:4000/uploads/' + korisnik.slika"
+          [alt]="korisnik.ime + ' ' + korisnik.prezime"
+        >
+      }
+      <div>
+        <strong>{{korisnik.kor_ime}}</strong>
+        <span>{{korisnik.vrstaKlijenta == "pravno" ? "Pravno lice" : "Fizičko lice"}}</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Klijentski meni">
+    <a class="active-link" href="/klijent">Profil</a>
+    <a href="/pretraga-klijent">Proizvodi</a>
+    <a href="/korpa">Korpa</a>
+    <a href="/arhiva-klijent">Arhiva</a>
+
+    @if (korisnik.vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">Javne nabavke</a>
+    }
+
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  <section class="dashboard-stats" aria-label="Brzi pregled">
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Narudžbine</span>
+      <strong>{{narudzbine.length}}</strong>
+      <small>ukupno evidentiranih</small>
+    </article>
+
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Tip naloga</span>
+      <strong class="dashboard-stat__text">{{korisnik.vrstaKlijenta == "pravno" ? "Pravno" : "Fizičko"}}</strong>
+      <small>aktivni korisnički profil</small>
+    </article>
+
+    <article class="dashboard-stat dashboard-stat--action">
+      <span class="dashboard-stat__label">Nova narudžbina</span>
+      <strong class="dashboard-stat__text">Pretražite ponudu</strong>
+      <a href="/pretraga-klijent">Pregledaj proizvode →</a>
+    </article>
+  </section>
+
+  <section class="card profile-card-premium">
+    <div class="section-header">
+      <div>
+        <span class="section-kicker">Moj nalog</span>
+        <h2 class="section-title">Profilni podaci</h2>
+        <p class="section-note">Korisničko ime je trajno vezano za nalog i nije ga moguće mijenjati.</p>
+      </div>
+      <span class="badge badge--success">Aktivan nalog</span>
+    </div>
+
+    <div class="profile-grid profile-grid--premium">
+      <aside class="profile-photo-wrap profile-photo-wrap--premium">
+        <div class="profile-photo-frame">
+          @if (previewSlika != null || korisnik.slika != "") {
+            <img
+              class="profile-photo"
+              [src]="previewSlika || ('http://localhost:4000/uploads/' + korisnik.slika)"
+              [alt]="korisnik.ime + ' ' + korisnik.prezime"
+            >
+          }
+        </div>
+
+        <strong>{{korisnik.ime}} {{korisnik.prezime}}</strong>
+        <span class="muted">@{{korisnik.kor_ime}}</span>
+        <span class="badge">{{korisnik.vrstaKlijenta == "pravno" ? "Pravno lice" : "Fizičko lice"}}</span>
+      </aside>
+
+      <div class="profile-form-panel">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="klIme">Ime</label>
+            <input id="klIme" type="text" [(ngModel)]="korisnik.ime">
+          </div>
+
+          <div class="form-field">
+            <label for="klPrezime">Prezime</label>
+            <input id="klPrezime" type="text" [(ngModel)]="korisnik.prezime">
+          </div>
+
+          <div class="form-field">
+            <label for="klTelefon">Telefon</label>
+            <input id="klTelefon" type="text" [(ngModel)]="korisnik.telefon">
+          </div>
+
+          <div class="form-field">
+            <label for="klEmail">E-mail</label>
+            <input id="klEmail" type="email" [(ngModel)]="korisnik.email">
+          </div>
+        </div>
+
+        @if (korisnik.vrstaKlijenta == "pravno") {
+          <div class="form-divider"><span>Podaci o instituciji</span></div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="klInstitucija">Naziv institucije</label>
+              <input id="klInstitucija" type="text" [(ngModel)]="korisnik.nazivInstitucije">
+            </div>
+
+            <div class="form-field">
+              <label for="klGrad">Grad</label>
+              <input id="klGrad" type="text" [(ngModel)]="korisnik.grad">
+            </div>
+
+            <div class="form-field form-field--full">
+              <label for="klAdresa">Adresa</label>
+              <input id="klAdresa" type="text" [(ngModel)]="korisnik.adresa">
+            </div>
+
+            <div class="form-field">
+              <label for="klMaticni">Matični broj</label>
+              <input id="klMaticni" type="text" [(ngModel)]="korisnik.maticniBroj" maxlength="8">
+            </div>
+
+            <div class="form-field">
+              <label for="klPib">PIB</label>
+              <input id="klPib" type="text" [(ngModel)]="korisnik.pib" maxlength="9">
+            </div>
+          </div>
+        }
+
+        <div class="form-divider"><span>Profilna slika</span></div>
+
+        <div class="upload-panel upload-panel--compact">
+          <div>
+            <strong>Promijenite profilnu sliku</strong>
+            <p>JPG/PNG/GIF, dimenzije od 100×100 do 250×250 px.</p>
+          </div>
+          <input
+            id="klSlika"
+            type="file"
+            accept=".jpg,.jpeg,.png,.gif"
+            (change)="izabranaSlika($event)"
+          >
+        </div>
+
+        <div class="actions profile-actions">
+          <button class="primary" (click)="azurirajProfil()">Sačuvaj izmjene</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="message">{{poruka}}</p>
+  </section>
+
+  <section class="section orders-section">
+    <div class="section-header">
+      <div>
+        <span class="section-kicker">Istorija narudžbina</span>
+        <h2 class="section-title">Moje narudžbine</h2>
+        <p class="section-note">Kliknite na označena zaglavlja kako biste promijenili redoslijed sortiranja.</p>
+      </div>
+      <span class="badge">{{narudzbine.length}} stavki</span>
+    </div>
+
+    @if (narudzbine.length > 0) {
+      <div class="table-wrap table-wrap--premium">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="sortirajNarudzbine('idFakture')">ID fakture ↕</th>
+              <th class="sortable" (click)="sortirajNarudzbine('nazivStamparije')">Štamparija ↕</th>
+              <th class="sortable" (click)="sortirajNarudzbine('grad')">Grad ↕</th>
+              <th>Proizvodi</th>
+              <th class="sortable" (click)="sortirajNarudzbine('ukupanIznos')">Ukupan iznos ↕</th>
+              <th>Status</th>
+              <th>Akcija</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (narudzbina of narudzbine; track narudzbina.idFakture) {
+              <tr>
+                <td><span class="invoice-id">{{narudzbina.idFakture}}</span></td>
+                <td><strong>{{narudzbina.nazivStamparije}}</strong></td>
+                <td>{{narudzbina.grad}}</td>
+                <td>
+                  <div class="order-products-list">
+                    @for (proizvod of narudzbina.proizvodi; track $index; let i = $index) {
+                      <span>{{i + 1}}. {{proizvod.naziv}} <b>× {{proizvod.kolicina}}</b></span>
+                    }
+                  </div>
+                </td>
+                <td><strong>{{narudzbina.ukupanIznos}} RSD</strong></td>
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge--naruceno]="narudzbina.status == 'naruceno'"
+                    [class.badge--placeno]="narudzbina.status == 'placeno'"
+                    [class.badge--u-stampi]="narudzbina.status == 'u stampi'"
+                    [class.badge--isporuceno]="narudzbina.status == 'isporuceno'"
+                    [class.badge--primljeno]="narudzbina.status == 'primljeno'"
+                  >
+                    {{narudzbina.status}}
+                  </span>
+                </td>
+                <td>
+
+    @if (narudzbina.status == "naruceno") {
+
+        @if (narudzbinaZaPlacanje == narudzbina.idFakture) {
+
+            <div class="payment-form">
+
+                <ul class="payment-stavke">
+                    @for (stavka of narudzbina.proizvodi; track $index) {
+                        <li>{{stavka.naziv}} <b>× {{stavka.kolicina}}</b> — {{stavka.ukupnaCena}} RSD</li>
+                    }
+                </ul>
+
+                <select [(ngModel)]="tipKartice">
+                    <option value="">Tip kartice</option>
+                    <option value="Visa">Visa</option>
+                    <option value="Mastercard">Mastercard</option>
+                </select>
+
+                <span class="payment-form__field-label">Broj kartice</span>
+                <div id="stripe-broj-kartice" class="stripe-element"></div>
+
+                <div class="payment-form__row">
+                    <div>
+                        <span class="payment-form__field-label">Datum isticanja (MM/GG)</span>
+                        <div id="stripe-datum" class="stripe-element"></div>
+                    </div>
+                    <div>
+                        <span class="payment-form__field-label">CVC kod</span>
+                        <div id="stripe-cvc" class="stripe-element"></div>
+                    </div>
+                </div>
+
+                <div class="actions actions--compact">
+                    <button
+                        class="primary"
+                        [disabled]="stripeUcitavanje"
+                        (click)="potvrdiPlacanje(narudzbina)"
+                    >
+                        {{stripeUcitavanje ? 'Obrada...' : 'Plati'}}
+                    </button>
+                    <button class="secondary" (click)="odustaniOdPlacanja()">Otkaži plaćanje</button>
+                </div>
+
+                <p class="message">{{porukaPlacanja}}</p>
+            </div>
+
+        }
+        @else if (narudzbinaZaOtkazivanje == narudzbina.idFakture) {
+
+            <div class="actions actions--compact">
+                <span>Sigurno?</span>
+
+                <button
+                    class="danger"
+                    (click)="potvrdiOtkazivanje(narudzbina)"
+                >
+                    Da
+                </button>
+
+                <button
+                    class="secondary"
+                    (click)="odustaniOdOtkazivanja()"
+                >
+                    Ne
+                </button>
+            </div>
+
+        }
+        @else {
+
+            <div class="actions actions--compact">
+                <button
+                    class="success"
+                    (click)="otvoriPlacanje(narudzbina)"
+                >
+                    Plati
+                </button>
+
+                <button
+                    class="danger"
+                    (click)="otkaziNarudzbinu(narudzbina)"
+                >
+                    Otkaži
+                </button>
+            </div>
+
+        }
+
+    }
+
+</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @else {
+      <div class="empty-state empty-state--action">
+        <h3>Još nema narudžbina</h3>
+        <p>Pregledajte ponudu i kreirajte svoju prvu narudžbinu.</p>
+        <a class="btn btn-primary" href="/pretraga-klijent">Pregledaj proizvode</a>
+      </div>
+    }
+
+    <p class="message">{{poruka}}</p>
+  </section>
+</div>

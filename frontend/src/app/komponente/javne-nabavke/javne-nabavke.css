@@ -1,0 +1,19 @@
+:host { display: block; }
+.dashboard-hero--procurement { background: linear-gradient(135deg,#fff,#f7f4ff); }
+.procurement-info-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; overflow: hidden; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 17px; background: var(--border); }
+.procurement-info-strip > div { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; padding: 16px; background: #fff; }
+.procurement-info-strip strong { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--primary-soft); color: var(--primary-dark); }
+.procurement-info-strip span { color: var(--muted); font-size: .8rem; }
+.procurement-grid { display: grid; gap: 18px; }
+.tender-card--premium { padding: 0; overflow: hidden; }
+.tender-card--premium .tender-card__header { padding: 21px 23px; border-bottom: 1px solid var(--border); background: #fbfcff; }
+.tender-card__body { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 22px 23px; }
+.tender-column__heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; font-weight: 750; }
+.tender-column__heading b { min-width: 28px; height: 28px; display: grid; place-items: center; border-radius: 9px; background: var(--primary-soft); color: var(--primary-dark); }
+.mini-list--premium .mini-list__item { border: 1px solid var(--border); border-radius: 12px; background: #fff; }
+.mini-list__item small { display: block; color: var(--muted); }
+.tender-price { color: var(--primary-dark); font-weight: 800; }
+.result-box--winner { margin: 0 23px 23px; border-color: #b7e5d4; background: var(--success-soft); }
+.result-box--winner span,.result-box--winner strong { display: block; }
+.tender-open-note { margin: 0 23px 23px; padding: 12px 14px; border-radius: 11px; background: #fff8e8; color: #80601f; font-size: .82rem; }
+@media (max-width: 760px) { .procurement-info-strip,.tender-card__body { grid-template-columns: 1fr; } }

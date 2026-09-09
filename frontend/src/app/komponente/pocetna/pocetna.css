@@ -1,0 +1,11 @@
+:host { display: block; }
+
+.hero--marketplace { align-items: stretch; }
+.hero--marketplace .hero__content { position: relative; overflow: hidden; }
+.hero--marketplace .hero__content::after { content: ""; position: absolute; width: 270px; height: 270px; right: -100px; bottom: -130px; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; box-shadow: 0 0 0 34px rgba(255,255,255,.035),0 0 0 68px rgba(255,255,255,.025); }
+.hero__actions,.hero__benefits,.hero__topline,.hero__title,.hero__text { position: relative; z-index: 1; }
+.product-grid--featured { align-items: stretch; }
+.product-card--featured { display: flex; flex-direction: column; }
+.product-card--featured .product-card__body { display: flex; flex: 1; flex-direction: column; }
+.product-card--featured .product-card__footer { margin-top: auto; }
+.home-section { scroll-margin-top: 95px; }

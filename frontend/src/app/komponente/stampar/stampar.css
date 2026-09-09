@@ -1,0 +1,12 @@
+:host { display: block; }
+.dashboard-hero--printer { background: linear-gradient(135deg,#fff,#edf6f7); border-color: rgba(19,122,91,.14); }
+#profil,#novi-proizvod,#moji-proizvodi,#narudzbine,#licitacije,#rezultati-licitacija { scroll-margin-top: 160px; }
+.printer-page > section:not(.dashboard-stats) { border-color: var(--border); }
+#profil { overflow: hidden; }
+#profil .profile-photo-wrap { background: linear-gradient(180deg,#f3f8fb,#eaf3f5); }
+#novi-proizvod { padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); }
+#moji-proizvodi,#narudzbine,#licitacije,#rezultati-licitacija { padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); }
+#novi-proizvod .form-card { box-shadow: none; background: #fbfcfe; }
+.service-list .mini-list__item { border: 1px solid var(--border); border-radius: 11px; background: #fff; }
+.tender-offer { align-items: end; }
+@media (max-width: 760px) { #novi-proizvod,#moji-proizvodi,#narudzbine,#licitacije,#rezultati-licitacija { padding: 18px; } }

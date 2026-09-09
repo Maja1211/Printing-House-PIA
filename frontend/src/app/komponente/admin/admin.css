@@ -1,0 +1,19 @@
+:host { display: block; }
+.dashboard-hero--admin { color: #fff; border-color: transparent; background: radial-gradient(circle at 90% 10%,rgba(245,158,11,.25),transparent 16rem),linear-gradient(135deg,#172033,#2a4165); }
+.dashboard-hero--admin .page-title { color: #fff; }
+.dashboard-hero--admin .page-subtitle { color: rgba(255,255,255,.72); }
+.dashboard-hero--admin .section-kicker { color: #f7c965; }
+.dashboard-hero--admin .dashboard-hero__mini-card { color: var(--text); }
+
+#registracije,#korisnici,#kategorije,#statistike { scroll-margin-top: 160px; }
+.statistike-linijski { margin-top: 20px; }
+#registracije { padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); }
+.admin-user-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.admin-user-card { overflow: hidden; padding: 0; }
+.admin-user-card__header { padding: 19px 20px; border-bottom: 1px solid var(--border); background: #f8fafc; }
+.admin-user-card > .form-grid { padding: 20px; }
+.admin-user-card > .actions { padding: 0 20px 20px; }
+#kategorije { padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); }
+.category-card { transition: transform .2s ease,box-shadow .2s ease; }
+.category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+@media (max-width: 880px) { .admin-user-grid { grid-template-columns: 1fr; } }

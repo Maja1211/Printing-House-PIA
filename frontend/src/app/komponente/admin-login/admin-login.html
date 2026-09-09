@@ -1,0 +1,46 @@
+<div class="auth-page admin-login-page">
+  <nav class="page-nav page-nav--public" aria-label="Administratorska prijava">
+    <a href="/">Početna</a>
+    <a class="active-link" href="/admin-login">Administratorska prijava</a>
+  </nav>
+
+  <section class="auth-layout auth-layout--admin">
+    <div class="auth-visual auth-visual--admin">
+      <span class="auth-visual__eyebrow">ZAŠTIĆENA ZONA</span>
+      <h1>Administracija sistema</h1>
+      <p>Poseban pristup za upravljanje korisnicima, registracijama i kategorijama proizvoda.</p>
+
+      <div class="admin-login-features">
+        <span>Korisnički nalozi</span>
+        <span>Zahtjevi za registraciju</span>
+        <span>Kategorije i potkategorije</span>
+      </div>
+    </div>
+
+    <div class="auth-card auth-card--elevated">
+      <div class="auth-card__icon auth-card__icon--admin">A</div>
+      <span class="section-kicker">Administrator</span>
+      <h2>Prijava u kontrolni panel</h2>
+      <p class="auth-card__intro">Ova forma je odvojena od javne prijave korisnika.</p>
+
+      <div class="form-grid form-grid--single">
+        <div class="form-field">
+          <label for="adminKorIme">Korisničko ime</label>
+          <input id="adminKorIme" type="text" [(ngModel)]="kor_ime" autocomplete="username" placeholder="Korisničko ime">
+        </div>
+
+        <div class="form-field">
+          <label for="adminLozinka">Lozinka</label>
+          <input id="adminLozinka" type="password" [(ngModel)]="lozinka" autocomplete="current-password" placeholder="Lozinka">
+        </div>
+      </div>
+
+      <div class="actions auth-card__actions">
+        <button class="primary" (click)="login()">Prijavi se</button>
+        <a class="btn btn-secondary" href="/">Nazad na početnu</a>
+      </div>
+
+      <p class="message">{{poruka}}</p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,48 @@
+{
+  "stampaorijaId": "stampa_001",
+  "nazivStamparije": "Copy Studio Kumanovska",
+  "proizvodi": [
+    {
+      "sifra": "PR-023",
+      "naziv": "Poslovna Fascikla sa Džepovima",
+      "opis": "Kartonska fascikla sa unutrašnjim džepovima za dokumenta, pogodna za brendiranje logom institucije.",
+      "kategorija": "Štampa malih formata",
+      "potkategorija": "Fascikle",
+      "jedinicnaCena": 190.00,
+      "kolicinaNaLageru": 300,
+      "dostupneBoje": ["Bijela", "Siva"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-24",
+          "tipStampe": "Digitalna štampa",
+          "dodatnaCenaPoKomadu": 25.00,
+          "maxSirinaMm": 220,
+          "maxVisinaMm": 310
+        }
+      ]
+    },
+    {
+      "sifra": "PR-024",
+      "naziv": "Foto Zahvalnica Premium",
+      "opis": "Zahvalnica na kvalitetnom sjajnom papiru sa mogućnošću štampe fotografije i posvete.",
+      "kategorija": "Štampa malih formata",
+      "potkategorija": "Zahvalnice",
+      "jedinicnaCena": 250.00,
+      "kolicinaNaLageru": 150,
+      "dostupneBoje": ["Bijela", "Krem"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-25",
+          "tipStampe": "Digitalna štampa visoke rezolucije",
+          "dodatnaCenaPoKomadu": 45.00,
+          "maxSirinaMm": 200,
+          "maxVisinaMm": 150
+        }
+      ]
+    }
+  ]
+}

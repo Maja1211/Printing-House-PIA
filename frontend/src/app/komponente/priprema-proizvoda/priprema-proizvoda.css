@@ -1,0 +1,87 @@
+:host { display: block; }
+
+.prep-workspace {
+  display: grid;
+  grid-template-columns: minmax(330px,.85fr) minmax(0,1.15fr);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.prep-preview { padding: 24px; background: linear-gradient(160deg,#f7f9fc,#eef4fb); }
+.prep-preview__top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.prep-preview__image { min-height: 430px; display: grid; place-items: center; padding: 28px; }
+.prep-preview__image img { width: min(100%,420px); max-height: 390px; object-fit: contain; filter: drop-shadow(0 18px 28px rgba(31,45,61,.12)); }
+.prep-preview__caption { padding: 0 8px 8px; }
+.prep-preview__caption h2 { margin: 0 0 5px; }
+.prep-preview__caption p { margin: 0; color: var(--muted); }
+
+.prep-config { padding: clamp(28px,5vw,48px); }
+.prep-config > h2 { margin: 6px 0 7px; font-size: 2rem; letter-spacing: -.035em; }
+.prep-form { display: grid; gap: 14px; margin-top: 22px; }
+.prep-actions { margin-top: 24px; }
+
+@media (max-width: 850px) {
+  .prep-workspace { grid-template-columns: 1fr; }
+  .prep-preview__image { min-height: 300px; }
+}
+
+.print-preview-stage {
+    position: relative;
+    width: 100%;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f6f8fc;
+}
+
+.print-preview-product {
+    width: 100%;
+    max-height: 440px;
+    object-fit: contain;
+}
+
+.print-overlay-image {
+    position: absolute;
+    width: 22%;
+    max-height: 28%;
+    object-fit: contain;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.print-overlay-text {
+    position: absolute;
+    top: 62%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px 10px;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 6px;
+    max-width: 70%;
+}
+
+.selected-file {
+    margin: 0;
+    color: #667085;
+}
+
+@media (max-width: 700px) {
+
+    .print-preview-stage {
+        min-height: 300px;
+    }
+
+    .print-overlay-text {
+        font-size: 14px;
+    }
+}

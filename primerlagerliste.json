@@ -1,0 +1,48 @@
+{
+  "stampaorijaId": "stampa_001",
+  "nazivStamparije": "Copy Studio Kumanovska",
+  "proizvodi": [
+    {
+      "sifra": "PR-019",
+      "naziv": "Termo Šolja 400ml",
+      "opis": "Dvoslojna termo šolja od nerđajućeg čelika, zadržava temperaturu pića i pogodna je za sublimacionu štampu loga ili fotografije.",
+      "kategorija": "Kreativne štampe",
+      "potkategorija": "Šolje",
+      "jedinicnaCena": 450.00,
+      "kolicinaNaLageru": 200,
+      "dostupneBoje": ["Bijela", "Crna"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-20",
+          "tipStampe": "Sublimaciona štampa",
+          "dodatnaCenaPoKomadu": 160.00,
+          "maxSirinaMm": 220,
+          "maxVisinaMm": 90
+        }
+      ]
+    },
+    {
+      "sifra": "PR-020",
+      "naziv": "Rođendanska Pozivnica",
+      "opis": "Elegantna pozivnica na kvalitetnom kartonu, pogodna za rođendane i privatna slavlja, uz mogućnost personalizacije teksta.",
+      "kategorija": "Štampa malih formata",
+      "potkategorija": "Pozivnice",
+      "jedinicnaCena": 60.00,
+      "kolicinaNaLageru": 800,
+      "dostupneBoje": ["Bijela", "Krem"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-21",
+          "tipStampe": "Digitalna štampa",
+          "dodatnaCenaPoKomadu": 5.00,
+          "maxSirinaMm": 150,
+          "maxVisinaMm": 100
+        }
+      ]
+    }
+  ]
+}

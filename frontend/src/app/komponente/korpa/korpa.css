@@ -1,0 +1,24 @@
+:host { display: block; }
+.dashboard-hero--cart { background: linear-gradient(135deg,#fff,#f4f8fe); }
+.cart-total-hero { position: relative; z-index: 1; min-width: 220px; padding: 17px 20px; border-radius: 17px; color: #fff; background: linear-gradient(135deg,var(--primary-dark),#2d6db6); box-shadow: 0 16px 32px rgba(31,79,143,.22); }
+.cart-total-hero span,.cart-total-hero small { display: block; color: rgba(255,255,255,.74); }
+.cart-total-hero strong { display: block; margin: 3px 0; font-size: 1.65rem; }
+
+.cart-layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 20px; align-items: start; }
+.cart-groups { display: grid; gap: 16px; }
+.order-card--cart { margin: 0; padding: 0; overflow: hidden; }
+.order-card--cart .order-card__header { padding: 20px 22px; border-bottom: 1px solid var(--border); background: #fbfcfe; }
+.order-card--cart .table-wrap { border: 0; border-radius: 0; box-shadow: none; }
+.cart-print-text { display: inline-block; max-width: 180px; color: var(--muted); font-style: italic; }
+
+.cart-summary { position: sticky; top: 154px; padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: #fff; box-shadow: var(--shadow); }
+.cart-summary h2 { margin: 5px 0 18px; }
+.cart-summary__line { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.cart-summary__line--total { margin-top: 5px; padding: 16px 0; font-size: 1.08rem; }
+.cart-summary__line--total strong { color: var(--primary-dark); }
+.cart-summary__note { color: var(--muted); font-size: .82rem; }
+.cart-summary__confirm,.cart-summary__back { width: 100%; margin-top: 10px; }
+.empty-state--cart { min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.empty-state__mark { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 16px; border-radius: 16px; color: #fff; background: var(--primary); font-weight: 850; }
+
+@media (max-width: 930px) { .cart-layout { grid-template-columns: 1fr; } .cart-summary { position: static; } }

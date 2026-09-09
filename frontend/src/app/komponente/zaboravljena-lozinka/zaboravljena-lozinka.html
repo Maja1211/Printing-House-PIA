@@ -1,0 +1,36 @@
+<div class="auth-page">
+  <nav class="page-nav page-nav--public" aria-label="Javni meni">
+    <a href="/">Početna</a>
+    <a href="/login">Prijava</a>
+    <a href="/registracija">Registracija</a>
+  </nav>
+
+  <section class="auth-layout">
+    <div class="auth-visual">
+      <span class="auth-visual__eyebrow">PRINTING HOUSE</span>
+      <h1>Zaboravili ste lozinku?</h1>
+      <p>Unesite svoje korisničko ime ili e-mail adresu - poslaćemo Vam link za postavljanje nove lozinke.</p>
+    </div>
+
+    <div class="auth-card auth-card--elevated">
+      <div class="auth-card__icon">PH</div>
+      <span class="section-kicker">Zaboravljena lozinka</span>
+      <h2>Poništavanje lozinke</h2>
+      <p class="auth-card__intro">Link za postavljanje nove lozinke važiće 5 minuta od trenutka slanja.</p>
+
+      <div class="form-grid form-grid--single">
+        <div class="form-field">
+          <label for="unosZaReset">Korisničko ime ili e-mail</label>
+          <input id="unosZaReset" type="text" [(ngModel)]="korisnickoImeIliEmail" placeholder="Unesite korisničko ime ili e-mail">
+        </div>
+      </div>
+
+      <div class="actions auth-card__actions">
+        <button class="primary" (click)="posaljiZahtjev()">Pošalji zahtjev</button>
+        <a class="btn btn-secondary" href="/login">Nazad na prijavu</a>
+      </div>
+
+      <p class="message">{{poruka}}</p>
+    </div>
+  </section>
+</div>

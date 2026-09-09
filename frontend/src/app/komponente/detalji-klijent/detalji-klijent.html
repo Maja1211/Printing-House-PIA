@@ -1,0 +1,485 @@
+<div class="client-product-page">
+
+  <header class="page-header page-header--product">
+
+    <div>
+
+      <span class="section-kicker">
+        KATALOG / DETALJI
+      </span>
+
+      <h1 class="page-title">
+        {{proizvod.naziv}}
+      </h1>
+
+      <p class="page-subtitle">
+        Izaberite boju i uslugu štampe, pa nastavite na pripremu proizvoda.
+      </p>
+
+    </div>
+
+    <span class="badge">
+      {{proizvod.sifra}}
+    </span>
+
+  </header>
+
+
+  <nav
+    class="page-nav page-nav--dashboard"
+    aria-label="Klijentski meni"
+  >
+
+    <a href="/klijent">
+      Profil
+    </a>
+
+    <a
+      class="active-link"
+      href="/pretraga-klijent"
+    >
+      Proizvodi
+    </a>
+
+    <a href="/korpa">
+      Korpa
+    </a>
+
+    <a href="/arhiva-klijent">
+      Arhiva
+    </a>
+
+    @if (vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">
+        Javne nabavke
+      </a>
+    }
+
+    <button
+      class="nav-logout"
+      (click)="odjava()"
+    >
+      Odjava
+    </button>
+
+  </nav>
+
+
+  <section class="product-showcase client-product-showcase">
+
+    <div class="product-showcase__media">
+
+      <span class="product-showcase__category">
+        {{proizvod.kategorija}}
+      </span>
+
+      <div class="product-gallery">
+
+        <div class="product-showcase__image-stage">
+
+          @if (izabranaSlika != "") {
+
+            <img
+              [src]="'http://localhost:4000/uploads/' + izabranaSlika"
+              [alt]="proizvod.naziv"
+            >
+
+          }
+
+        </div>
+
+
+        @if (slike.length > 1) {
+
+          <div class="product-thumbnails">
+
+            @for (slika of slike; track slika) {
+
+              <button
+                class="product-thumbnail"
+                [class.product-thumbnail--active]="slika == izabranaSlika"
+                (click)="izaberiSliku(slika)"
+              >
+
+                <img
+                  [src]="'http://localhost:4000/uploads/' + slika"
+                  [alt]="proizvod.naziv"
+                >
+
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="product-showcase__media-stats">
+
+        <span>
+          <b>{{proizvod.brojLajkova}}</b>
+          sviđanja
+        </span>
+
+        <span>
+          <b>{{proizvod.brojDislajkova}}</b>
+          nesviđanja
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="product-showcase__content">
+
+      <span class="section-kicker">
+        {{proizvod.nazivStamparije}}
+      </span>
+
+      <h2>
+        {{proizvod.naziv}}
+      </h2>
+
+      <p class="product-description">
+        {{proizvod.opis}}
+      </p>
+
+
+      <div class="product-key-info">
+
+        <div>
+          <span>Cijena</span>
+
+          <strong>
+            {{proizvod.jedinicnaCena}} RSD
+          </strong>
+
+          <small>
+            po komadu
+          </small>
+        </div>
+
+
+        <div>
+          <span>Na stanju</span>
+
+          <strong>
+            {{proizvod.kolicinaNaLageru}}
+          </strong>
+
+          <small>
+            komada
+          </small>
+        </div>
+
+
+        <div>
+          <span>Štamparija</span>
+
+          <strong>
+            {{proizvod.nazivStamparije}}
+          </strong>
+
+          <small>
+            {{grad}}
+          </small>
+        </div>
+
+      </div>
+
+      <section class="printer-location">
+
+    <div class="printer-location__header">
+
+        <div>
+            <span class="section-kicker">
+                Lokacija štamparije
+            </span>
+
+            <h3>
+                {{proizvod.nazivStamparije}}
+            </h3>
+
+            <p>
+                {{adresa}}, {{grad}}
+            </p>
+        </div>
+
+    </div>
+
+
+    @if (mapaUrl != null) {
+
+        <iframe
+            class="printer-map"
+            [src]="mapaUrl"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Lokacija štamparije"
+        >
+        </iframe>
+
+    }
+
+</section>
+
+
+      <div class="configuration-panel">
+
+        <div class="configuration-panel__header">
+
+          <span>
+            1
+          </span>
+
+          <div>
+
+            <strong>
+              Izaberite boju
+            </strong>
+
+            <small>
+              Ako nema ponuđenih boja koristi se bijela.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-field">
+
+          @if (proizvod.dostupneBoje.length > 0) {
+
+            <select
+              id="bojaProizvoda"
+              [(ngModel)]="boja"
+            >
+
+              @for (
+                b of proizvod.dostupneBoje;
+                track b
+              ) {
+
+                <option [value]="b">
+                  {{b}}
+                </option>
+
+              }
+
+            </select>
+
+          }
+
+          @else {
+
+            <select
+              id="bojaProizvodaDefault"
+              [(ngModel)]="boja"
+            >
+
+              <option value="Bijela">
+                Bijela
+              </option>
+
+            </select>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="configuration-panel">
+
+        <div class="configuration-panel__header">
+
+          <span>
+            2
+          </span>
+
+          <div>
+
+            <strong>
+              Izaberite uslugu štampe
+            </strong>
+
+            <small>
+              Prikazane su dimenzije i dodatna cijena po komadu.
+            </small>
+
+          </div>
+
+        </div>
+
+
+        @if (proizvod.uslugeStampe.length > 0) {
+
+          <div class="choice-list choice-list--premium">
+
+            @for (
+              usluga of proizvod.uslugeStampe;
+              track usluga.idUsluge
+            ) {
+
+              <label class="choice-item choice-item--service">
+
+                <input
+                  type="radio"
+                  name="usluga"
+                  [value]="usluga.idUsluge"
+                  [(ngModel)]="uslugaStampe"
+                >
+
+                <span class="choice-item__body">
+
+                  <strong>
+                    {{usluga.tipStampe}}
+                  </strong>
+
+                  <span>
+                    Do
+                    {{usluga.maxSirinaMm}}
+                    ×
+                    {{usluga.maxVisinaMm}}
+                    mm
+                  </span>
+
+                </span>
+
+                <b>
+                  +{{usluga.dodatnaCenaPoKomadu}} RSD
+                </b>
+
+              </label>
+
+            }
+
+          </div>
+
+        }
+
+        @else {
+
+          <div class="empty-state">
+            Za ovaj proizvod nema dodatnih usluga štampe.
+          </div>
+
+        }
+
+      </div>
+
+
+      <div class="actions product-showcase__actions">
+
+        <button
+          class="secondary"
+          (click)="nazad()"
+        >
+          Nazad
+        </button>
+
+        <button
+          class="primary"
+          (click)="dalje()"
+        >
+          Nastavi na pripremu
+        </button>
+
+      </div>
+
+      <p class="message">
+        {{poruka}}
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <section class="section comments-section">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="section-kicker">
+          Iskustva korisnika
+        </span>
+
+        <h3 class="section-title">
+          Posljednjih pet komentara
+        </h3>
+
+        <p class="section-note">
+          Vaši komentari označeni su diskretnom narandžastom linijom.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    @if (poslednjihPetKomentara().length > 0) {
+
+      <div class="comment-list comment-list--premium">
+
+        @for (
+          komentar of poslednjihPetKomentara();
+          track $index
+        ) {
+
+          <article
+            class="comment"
+            [class.comment--own]="komentar.kor_ime == kor_ime"
+          >
+
+            <div class="comment__avatar">
+              {{komentar.kor_ime.charAt(0)}}
+            </div>
+
+
+            <div class="comment__content">
+
+              <div class="comment__meta">
+
+                <strong>
+                  {{komentar.kor_ime}}
+                </strong>
+
+                <span>
+                  {{komentar.datum | date:'dd.MM.yyyy. HH:mm'}}
+                </span>
+
+              </div>
+
+              <p>
+                {{komentar.tekst}}
+              </p>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+    @else {
+
+      <div class="empty-state">
+        Još nema komentara za ovaj proizvod.
+      </div>
+
+    }
+
+  </section>
+
+</div>

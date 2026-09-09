@@ -1,0 +1,49 @@
+<div class="auth-page login-page">
+  <nav class="page-nav page-nav--public" aria-label="Javni meni">
+    <a href="/">Početna</a>
+    <a class="active-link" href="/login">Prijava</a>
+    <a href="/registracija">Registracija</a>
+  </nav>
+
+  <section class="auth-layout">
+    <div class="auth-visual">
+      <span class="auth-visual__eyebrow">PRINTING HOUSE</span>
+      <h1>Vaša narudžbina počinje ovdje.</h1>
+      <p>Prijavite se kao klijent ili štampar i nastavite tamo gdje ste stali.</p>
+
+      <div class="auth-visual__steps">
+        <div><strong>01</strong><span>Pronađite proizvod</span></div>
+        <div><strong>02</strong><span>Izaberite štampu</span></div>
+        <div><strong>03</strong><span>Pratite narudžbinu</span></div>
+      </div>
+    </div>
+
+    <div class="auth-card auth-card--elevated">
+      <div class="auth-card__icon">PH</div>
+      <span class="section-kicker">Prijava</span>
+      <h2>Dobro došli nazad</h2>
+      <p class="auth-card__intro">Unesite svoje korisničko ime i lozinku.</p>
+
+      <div class="form-grid form-grid--single">
+        <div class="form-field">
+          <label for="loginKorIme">Korisničko ime</label>
+          <input id="loginKorIme" type="text" [(ngModel)]="kor_ime" autocomplete="username" placeholder="Unesite korisničko ime">
+        </div>
+
+        <div class="form-field">
+          <label for="loginLozinka">Lozinka</label>
+          <input id="loginLozinka" type="password" [(ngModel)]="lozinka" autocomplete="current-password" placeholder="Unesite lozinku">
+        </div>
+      </div>
+
+      <div class="actions auth-card__actions">
+        <button class="primary" (click)="login()">Prijavi se</button>
+        <a class="btn btn-secondary" href="/registracija">Kreiraj nalog</a>
+      </div>
+
+      <p class="message">{{poruka}}</p>
+      <p class="auth-card__note"><a href="/zaboravljena-lozinka">Zaboravili ste lozinku?</a></p>
+      <p class="auth-card__note">Administratorska prijava nalazi se na posebnoj administratorskoj putanji.</p>
+    </div>
+  </section>
+</div>

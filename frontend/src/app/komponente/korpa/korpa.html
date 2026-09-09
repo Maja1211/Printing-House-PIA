@@ -1,0 +1,172 @@
+<div class="cart-page">
+  <header class="dashboard-hero dashboard-hero--cart">
+    <div>
+      <span class="section-kicker">E-KORPA</span>
+      <h1 class="page-title">Pregled narudžbine</h1>
+      <p class="page-subtitle">Proizvodi su grupisani po štamparijama kako biste jasno vidjeli šta naručujete od svakog ponuđača.</p>
+    </div>
+
+    @if (stavke.length > 0) {
+      <div class="cart-total-hero">
+        <span>Ukupno</span>
+        <strong>{{ukupno()}} RSD</strong>
+        <small>{{stavke.length}} stavki u korpi</small>
+      </div>
+    }
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Klijentski meni">
+    <a href="/klijent">Profil</a>
+    <a href="/pretraga-klijent">Proizvodi</a>
+    <a class="active-link" href="/korpa">Korpa</a>
+    <a href="/arhiva-klijent">Arhiva</a>
+    @if (vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">Javne nabavke</a>
+    }
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  @if (trenutnaFaktura != null) {
+    <section class="card">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Plaćanje</span>
+          <h2 class="section-title">Faktura {{trenutnaFaktura.idFakture}} — {{trenutnaFaktura.nazivStamparije}}</h2>
+          <p class="section-note">Za dovršetak narudžbine potrebno je platiti iznos od <strong>{{trenutnaFaktura.ukupanIznos}} RSD</strong>.</p>
+        </div>
+      </div>
+
+      <ul class="payment-stavke">
+        @for (stavka of trenutnaFaktura.proizvodi; track $index) {
+          <li>{{stavka.naziv}} <b>× {{stavka.kolicina}}</b> — {{stavka.ukupnaCena}} RSD</li>
+        }
+      </ul>
+
+      <div class="payment-form">
+
+        <select [(ngModel)]="tipKartice">
+          <option value="">Tip kartice</option>
+          <option value="Visa">Visa</option>
+          <option value="Mastercard">Mastercard</option>
+        </select>
+
+        <span class="payment-form__field-label">Broj kartice</span>
+        <div id="stripe-broj-kartice" class="stripe-element"></div>
+
+        <div class="payment-form__row">
+          <div>
+            <span class="payment-form__field-label">Datum isticanja (MM/GG)</span>
+            <div id="stripe-datum" class="stripe-element"></div>
+          </div>
+          <div>
+            <span class="payment-form__field-label">CVC kod</span>
+            <div id="stripe-cvc" class="stripe-element"></div>
+          </div>
+        </div>
+
+        <div class="actions actions--compact">
+          <button
+            class="primary"
+            [disabled]="stripeUcitavanje"
+            (click)="potvrdiPlacanje()"
+          >
+            {{stripeUcitavanje ? 'Obrada...' : 'Plati'}}
+          </button>
+          <button class="secondary" (click)="preskociPlacanje()">Plati kasnije</button>
+        </div>
+
+        <p class="section-note">Ako odaberete „Plati kasnije", narudžbina ostaje u statusu „naručeno" i plaćanje možete dovršiti na stranici Profil.</p>
+
+        <p class="message">{{porukaPlacanja}}</p>
+      </div>
+    </section>
+  }
+  @else if (placanjeZavrseno) {
+    <div class="empty-state empty-state--cart">
+      <div class="empty-state__mark">PH</div>
+      <h3>Narudžbina je obrađena</h3>
+      <p>Sve fakture iz ove korpe su obrađene. Status i eventualno odloženo plaćanje možete pratiti na stranici Profil.</p>
+      <a class="btn btn-primary" href="/pretraga-klijent">Nastavi kupovinu</a>
+      <a class="btn btn-secondary" href="/klijent">Idi na profil</a>
+    </div>
+  }
+  @else if (stavke.length > 0) {
+    <div class="cart-layout">
+      <div class="cart-groups">
+        @for (grupa of grupisaneStavke(); track grupa.nazivStamparije) {
+          <section class="order-card order-card--cart">
+            <div class="order-card__header">
+              <div>
+                <span class="section-kicker">Štamparija</span>
+                <h3>{{grupa.nazivStamparije}}</h3>
+              </div>
+              <span class="badge">Zasebna faktura</span>
+            </div>
+
+            <div class="table-wrap table-wrap--premium">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Proizvod</th>
+                    <th>Količina</th>
+                    <th>Tip štampe</th>
+                    <th>Tekst</th>
+                    <th>Ukupna cijena</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (stavka of grupa.stavke; track stavka.originalniIndex) {
+                    <tr>
+                      <td><strong>{{stavka.naziv}}</strong></td>
+                      <td><span class="quantity-pill">× {{stavka.kolicina}}</span></td>
+                      <td>{{stavka.tipStampe}}</td>
+                      <td><span class="cart-print-text">{{stavka.tekstZaStampu || "—"}}</span></td>
+                      <td><strong>{{stavka.ukupnaCena}} RSD</strong></td>
+                      <td>
+                        <button class="danger danger--ghost" (click)="obrisi(stavka.originalniIndex)">Obriši</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+      </div>
+
+      <aside class="cart-summary">
+        <span class="section-kicker">Sažetak</span>
+        <h2>Vaša korpa</h2>
+
+        <div class="cart-summary__line">
+          <span>Broj stavki</span>
+          <strong>{{stavke.length}}</strong>
+        </div>
+
+        <div class="cart-summary__line cart-summary__line--total">
+          <span>Ukupno</span>
+          <strong>{{ukupno()}} RSD</strong>
+        </div>
+
+        <p class="cart-summary__note">Ako proizvodi dolaze iz više štamparija, sistem formira zasebnu narudžbinu za svaku štampariju.</p>
+
+        <button class="primary cart-summary__confirm" [disabled]="potvrdaUToku" (click)="potvrdi()">{{potvrdaUToku ? 'Obrada...' : 'Potvrdi narudžbinu'}}</button>
+        <button class="secondary cart-summary__back" (click)="nazad()">Nastavi kupovinu</button>
+
+        <p class="message">{{poruka}}</p>
+      </aside>
+    </div>
+  }
+  @else {
+    <p class="message">{{poruka}}</p>
+
+    <div class="empty-state empty-state--cart">
+      <div class="empty-state__mark">PH</div>
+      <h3>Vaša korpa je trenutno prazna</h3>
+      <p>Pregledajte dostupne proizvode i dodajte ono što želite da personalizujete.</p>
+      <a class="btn btn-primary" href="/pretraga-klijent">Pregledaj proizvode</a>
+    </div>
+  }
+</div>

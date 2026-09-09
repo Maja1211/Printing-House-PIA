@@ -1,0 +1,115 @@
+<div class="catalog-page">
+  <header class="dashboard-hero dashboard-hero--catalog">
+    <div>
+      <span class="section-kicker">KATALOG</span>
+      <h1 class="page-title">Pronađite pravi proizvod</h1>
+      <p class="page-subtitle">Pretražite dostupnu ponudu po nazivu i kategoriji, zatim otvorite detalje i izaberite opcije štampe.</p>
+    </div>
+    <div class="dashboard-hero__mini-card">
+      <strong>{{proizvodi.length}}</strong>
+      <span>proizvoda u trenutnom prikazu</span>
+    </div>
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Klijentski meni">
+    <a href="/klijent">Profil</a>
+    <a class="active-link" href="/pretraga-klijent">Proizvodi</a>
+    <a href="/korpa">Korpa</a>
+    <a href="/arhiva-klijent">Arhiva</a>
+    @if (vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">Javne nabavke</a>
+    }
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  <section class="catalog-search-card">
+    <div class="catalog-search-card__intro">
+      <span class="section-kicker">Pretraga</span>
+      <h2>Šta želite da naručite?</h2>
+      <p>Kombinujte naziv i kategoriju ili ostavite jedno polje prazno.</p>
+    </div>
+
+    <div class="catalog-search-card__form">
+      <div class="form-field">
+        <label for="klijentNaziv">Naziv proizvoda</label>
+        <input id="klijentNaziv" type="text" [(ngModel)]="naziv" placeholder="npr. Polo majica">
+      </div>
+
+      <div class="form-field">
+        <label for="klijentKategorija">Kategorija</label>
+        <select id="klijentKategorija" [(ngModel)]="kategorija">
+          <option value="">Sve kategorije</option>
+          @for (kat of kategorije; track kat) {
+            <option [value]="kat">{{kat}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="catalog-search-card__actions">
+        <button class="primary" (click)="pretraga()">Pretraži</button>
+        <button class="secondary" (click)="nazad()">Nazad na profil</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section catalog-results">
+    <div class="section-header">
+      <div>
+        <span class="section-kicker">Ponuda</span>
+        <h2 class="section-title">Rezultati pretrage</h2>
+        <p class="section-note">Kliknite na „Naziv proizvoda“ za rastuće ili opadajuće sortiranje.</p>
+      </div>
+      <span class="badge">{{proizvodi.length}} rezultata</span>
+    </div>
+
+    @if (proizvodi.length > 0) {
+      <div class="table-wrap table-wrap--premium">
+        <table class="data-table catalog-table">
+          <thead>
+            <tr>
+              <th>Proizvod</th>
+              <th class="sortable" (click)="sortirajPoNazivu()">Naziv proizvoda ↕</th>
+              <th>Kategorija</th>
+              <th>Štamparija</th>
+              <th>Cijena</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (proizvod of proizvodi; track proizvod.sifra) {
+              <tr>
+                <td>
+                  <div class="catalog-thumb">
+                    @if (proizvod.slikaUrl != "") {
+                      <img
+                        [src]="'http://localhost:4000/uploads/' + proizvod.slikaUrl"
+                        [alt]="proizvod.naziv"
+                      >
+                    }
+                  </div>
+                </td>
+                <td>
+                  <strong>{{proizvod.naziv}}</strong>
+                  <small class="catalog-code">{{proizvod.sifra}}</small>
+                </td>
+                <td><span class="badge">{{proizvod.kategorija}}</span></td>
+                <td>{{proizvod.nazivStamparije}}</td>
+                <td><strong class="price-text">{{proizvod.jedinicnaCena}} RSD</strong></td>
+                <td>
+                  <button class="secondary" (click)="detalji(proizvod.sifra)">Detalji</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @else {
+      <div class="empty-state empty-state--large">
+        <h3>Nema proizvoda u trenutnom prikazu</h3>
+        <p>Promijenite naziv ili kategoriju i ponovo pokrenite pretragu.</p>
+      </div>
+    }
+  </section>
+</div>

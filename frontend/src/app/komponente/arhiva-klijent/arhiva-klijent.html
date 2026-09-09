@@ -1,0 +1,142 @@
+<div class="archive-page">
+  <header class="dashboard-hero dashboard-hero--archive">
+    <div>
+      <span class="section-kicker">ARHIVA PROIZVODA</span>
+      <h1 class="page-title">Isporučeno, primljeno i ocijenjeno</h1>
+      <p class="page-subtitle">Ovdje potvrđujete prijem proizvoda i ostavljate svoje utiske nakon završene narudžbine.</p>
+    </div>
+    <div class="dashboard-hero__mini-card">
+      <strong>{{stavkeArhive().length}}</strong>
+      <span>proizvoda u arhivi</span>
+    </div>
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Klijentski meni">
+    <a href="/klijent">Profil</a>
+    <a href="/pretraga-klijent">Proizvodi</a>
+    <a href="/korpa">Korpa</a>
+    <a class="active-link" href="/arhiva-klijent">Arhiva</a>
+    @if (vrstaKlijenta == "pravno") {
+      <a href="/javne-nabavke">Javne nabavke</a>
+    }
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  <section class="archive-toolbar">
+    <div class="archive-toolbar__intro">
+      <span class="section-kicker">Pregled arhive</span>
+      <h2>Sortirajte proizvode</h2>
+      <p>Početni prikaz je po datumu, od najnovijih prema starijim stavkama.</p>
+    </div>
+
+    <div class="archive-toolbar__controls">
+      <div class="form-field">
+        <label for="arhivaSort">Sortiraj po</label>
+        <select id="arhivaSort" [(ngModel)]="sortiranje">
+          <option value="datum">Datumu naručivanja</option>
+          <option value="proizvod">Nazivu proizvoda</option>
+          <option value="kolicina">Količini</option>
+          <option value="stamparija">Štampariji</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="arhivaSmjer">Redoslijed</label>
+        <select id="arhivaSmjer" [(ngModel)]="rastuce">
+          <option [ngValue]="false">Opadajuće</option>
+          <option [ngValue]="true">Rastuće</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <p class="message">{{poruka}}</p>
+
+  @if (stavkeArhive().length > 0) {
+    <section class="section archive-list-section">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Istorija</span>
+          <h2 class="section-title">Proizvodi iz završenih narudžbina</h2>
+        </div>
+        <span class="badge">{{stavkeArhive().length}} stavki</span>
+      </div>
+
+      <div class="table-wrap table-wrap--premium">
+        <table class="data-table archive-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Štamparija</th>
+              <th>Proizvod</th>
+              <th>Količina</th>
+              <th>Status</th>
+              <th>Akcija i ocjena</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (stavka of stavkeArhive(); track stavka.idFakture + '-' + stavka.sifra) {
+              <tr>
+                <td><span class="archive-date">{{stavka.datum}}</span></td>
+                <td>{{stavka.nazivStamparije}}</td>
+                <td>
+                  <strong>{{stavka.naziv}}</strong>
+                  <small class="catalog-code">{{stavka.sifra}}</small>
+                </td>
+                <td><span class="quantity-pill">× {{stavka.kolicina}}</span></td>
+                <td>
+                  <span
+                    class="badge"
+                    [class.badge--isporuceno]="stavka.status == 'isporuceno'"
+                    [class.badge--primljeno]="stavka.status == 'primljeno'"
+                  >
+                    {{stavka.status}}
+                  </span>
+                </td>
+                <td class="archive-action-cell">
+                  @if (stavka.status == "isporuceno") {
+                    <div class="archive-confirm-box">
+                      <span>Proizvod je isporučen.</span>
+                      <button class="success" (click)="oznaciKaoPrimljeno(stavka.idFakture)">
+                        Potvrdi prijem
+                      </button>
+                    </div>
+                  }
+
+                  @if (stavka.status == "primljeno") {
+                    <div class="archive-review-box">
+                      <div class="actions actions--compact">
+                        <button class="feedback-btn" (click)="lajkuj(stavka.sifra)">Sviđa mi se</button>
+                        <button class="feedback-btn" (click)="dislajkuj(stavka.sifra)">Ne sviđa mi se</button>
+                      </div>
+
+                      @if (!komentarisano[stavka.sifra]) {
+                        <div class="comment-compose comment-compose--inline">
+                          <input
+                            type="text"
+                            [(ngModel)]="komentari[stavka.sifra]"
+                            placeholder="Napišite komentar o proizvodu"
+                          >
+                          <button class="primary" (click)="dodajKomentar(stavka.sifra)">Objavi</button>
+                        </div>
+                      }
+
+                      <p class="message">{{poruke[stavka.sifra]}}</p>
+                    </div>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+  @else {
+    <div class="empty-state empty-state--large section">
+      <h3>Arhiva je prazna</h3>
+      <p>Isporučeni i primljeni proizvodi pojaviće se ovdje kada narudžbine budu završene.</p>
+    </div>
+  }
+</div>

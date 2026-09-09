@@ -1,0 +1,281 @@
+<div class="admin-page">
+  <header class="dashboard-hero dashboard-hero--admin">
+    <div>
+      <span class="section-kicker">ADMINISTRACIJA</span>
+      <h1 class="page-title">Kontrolni panel sistema</h1>
+      <p class="page-subtitle">Upravljajte registracijama, korisničkim nalozima i strukturom kategorija iz jednog pregleda.</p>
+    </div>
+    <div class="dashboard-hero__mini-card">
+      <strong>{{zahtjevi.length}}</strong>
+      <span>zahtjeva čeka obradu</span>
+    </div>
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Administratorski meni">
+    <a class="active-link" href="#registracije" (click)="skociNaSekciju('registracije', $event)">Registracije</a>
+    <a href="#korisnici" (click)="skociNaSekciju('korisnici', $event)">Korisnici</a>
+    <a href="#kategorije" (click)="skociNaSekciju('kategorije', $event)">Kategorije</a>
+    <a href="#statistike" (click)="skociNaSekciju('statistike', $event)">Statistike</a>
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  <section class="dashboard-stats admin-stats" aria-label="Administratorski pregled">
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Korisnički nalozi</span>
+      <strong>{{korisnici.length}}</strong>
+      <small>naloga u sistemu</small>
+    </article>
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Zahtjevi</span>
+      <strong>{{zahtjevi.length}}</strong>
+      <small>čeka odluku</small>
+    </article>
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Kategorije</span>
+      <strong>{{kategorije.length}}</strong>
+      <small>aktivnih kategorija</small>
+    </article>
+  </section>
+
+  <p class="message">{{poruka}}</p>
+
+<section id="registracije" class="section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Zahtjevi za registraciju</h2>
+      <p class="section-note">Poseban pregled naloga koji čekaju odluku administratora.</p>
+    </div>
+    <span class="badge">{{zahtjevi.length}} zahtjeva</span>
+  </div>
+
+  @if (zahtjevi.length > 0) {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Korisničko ime</th>
+            <th>Ime i prezime</th>
+            <th>Tip</th>
+            <th>Institucija</th>
+            <th>E-mail</th>
+            <th>Akcija</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (korisnik of zahtjevi; track korisnik.kor_ime) {
+            <tr>
+              <td><strong>{{korisnik.kor_ime}}</strong></td>
+              <td>{{korisnik.ime}} {{korisnik.prezime}}</td>
+              <td>
+                <span class="badge">
+                  {{korisnik.tip == "stampar" ? "Štampar" : (korisnik.vrstaKlijenta == "pravno" ? "Pravno lice" : "Fizičko lice")}}
+                </span>
+              </td>
+              <td>{{korisnik.nazivInstitucije || "—"}}</td>
+              <td>{{korisnik.email}}</td>
+              <td>
+                <div class="actions actions--compact">
+                  <button class="success" (click)="odobri(korisnik)">Odobri</button>
+                  <button class="danger" (click)="odbij(korisnik)">Odbij</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @else {
+    <div class="empty-state">Nema novih zahtjeva za registraciju.</div>
+  }
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="korisnici" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Korisnički nalozi</h2>
+      <p class="section-note">Pregled, izmjena i brisanje postojećih naloga.</p>
+    </div>
+    <span class="badge">{{korisnici.length}} naloga</span>
+  </div>
+
+  <div class="admin-user-grid">
+    @for (korisnik of korisnici; track korisnik.kor_ime) {
+      <article class="card admin-user-card">
+        <div class="admin-user-card__header">
+          <div>
+            <span class="badge">{{korisnik.tip}}</span>
+            <h3>{{korisnik.kor_ime}}</h3>
+          </div>
+          <span
+            class="badge"
+            [class.badge--success]="korisnik.status == 'aktivan'"
+            [class.badge--warning]="korisnik.status == 'odbijen'"
+          >
+            {{korisnik.status}}
+          </span>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Ime</label>
+            <input [(ngModel)]="korisnik.ime">
+          </div>
+
+          <div class="form-field">
+            <label>Prezime</label>
+            <input [(ngModel)]="korisnik.prezime">
+          </div>
+
+          <div class="form-field">
+            <label>Telefon</label>
+            <input [(ngModel)]="korisnik.telefon">
+          </div>
+
+          <div class="form-field">
+            <label>E-mail</label>
+            <input type="email" [(ngModel)]="korisnik.email">
+          </div>
+
+          @if (korisnik.vrstaKlijenta == "pravno" || korisnik.tip == "stampar") {
+            <div class="form-field form-field--full">
+              <label>Naziv institucije</label>
+              <input [(ngModel)]="korisnik.nazivInstitucije">
+            </div>
+
+            <div class="form-field">
+              <label>Adresa</label>
+              <input [(ngModel)]="korisnik.adresa">
+            </div>
+
+            <div class="form-field">
+              <label>Grad</label>
+              <input [(ngModel)]="korisnik.grad">
+            </div>
+
+            <div class="form-field">
+              <label>Matični broj</label>
+              <input [(ngModel)]="korisnik.maticniBroj">
+            </div>
+
+            <div class="form-field">
+              <label>PIB</label>
+              <input [(ngModel)]="korisnik.pib">
+            </div>
+          }
+
+          @if (korisnik.tip != "admin") {
+            <div class="form-field form-field--full">
+              <label>Status</label>
+              <select [(ngModel)]="korisnik.status">
+                <option value="aktivan">aktivan</option>
+                <option value="odbijen">odbijen</option>
+              </select>
+            </div>
+          }
+        </div>
+
+        <div class="actions">
+          <button class="primary" (click)="sacuvajKorisnika(korisnik)">Sačuvaj izmjene</button>
+
+          @if (korisnik.tip != "admin") {
+            <button class="danger" (click)="obrisiKorisnika(korisnik)">Obriši nalog</button>
+          }
+        </div>
+      </article>
+    }
+  </div>
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="kategorije" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Kategorije proizvoda</h2>
+      <p class="section-note">Dodavanje novih kategorija i potkategorija u bazu.</p>
+    </div>
+  </div>
+
+  <div class="split-layout">
+    <div class="form-card">
+      <h3>Nova kategorija</h3>
+      <div class="form-field">
+        <label for="novaKat">Naziv kategorije</label>
+        <input id="novaKat" [(ngModel)]="novaKategorija" placeholder="npr. Poslovna galanterija">
+      </div>
+      <div class="actions">
+        <button class="primary" (click)="dodajKategoriju()">Dodaj kategoriju</button>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3>Nova potkategorija</h3>
+      <div class="form-grid form-grid--single">
+        <div class="form-field">
+          <label for="izborKat">Kategorija</label>
+          <select id="izborKat" [(ngModel)]="izabranaKategorija">
+            <option value="">Izaberite kategoriju</option>
+            @for (k of kategorije; track k.naziv) {
+              <option [value]="k.naziv">{{k.naziv}}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="novaPotkat">Naziv potkategorije</label>
+          <input id="novaPotkat" [(ngModel)]="novaPotkategorija" placeholder="Unesite naziv">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" (click)="dodajPotkategoriju()">Dodaj potkategoriju</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-grid section">
+    @for (k of kategorije; track k.naziv) {
+      <article class="category-card">
+        <h3>{{k.naziv}}</h3>
+        <div class="chip-list">
+          @for (p of k.potkategorije; track p) {
+            <span class="chip">{{p}}</span>
+          }
+        </div>
+      </article>
+    }
+  </div>
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="statistike" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Statistike</h2>
+      <p class="section-note">Podaci se automatski osvježavaju iz baze. Klik na naziv proizvoda u legendi trećeg grafikona ga isključuje/uključuje iz prikaza.</p>
+    </div>
+  </div>
+
+  <div class="split-layout">
+    <div class="form-card">
+      <h3>Promet po štampariji (posljednja 3 mjeseca)</h3>
+      <canvas id="grafikPrometaPlatno"></canvas>
+    </div>
+
+    <div class="form-card">
+      <h3>Najnaručivaniji proizvodi (posljednji mjesec)</h3>
+      <canvas id="grafikNarucivanjaPlatno"></canvas>
+    </div>
+  </div>
+
+  <div class="form-card statistike-linijski">
+    <h3>Kretanje ocjene proizvoda kroz vrijeme</h3>
+    <canvas id="grafikOcjenaPlatno"></canvas>
+  </div>
+</section>
+</div>

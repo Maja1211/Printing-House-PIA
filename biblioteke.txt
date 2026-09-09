@@ -1,0 +1,126 @@
+PRINTING HOUSE - Spisak koriscenih biblioteka i eksternih servisa
+====================================================================
+
+Sve biblioteke se instaliraju standardno komandom "npm install" u
+backend i frontend folderima (koristiti prilozeni package.json i
+package-lock.json). Pojedinacne komande ispod su iste biblioteke,
+navedene jedna po jedna radi preglednosti i sa linkom za svaku.
+
+
+BACKEND (Node.js / Express / TypeScript) - pokrenuti u backend/ folderu
+--------------------------------------------------------------------
+
+npm install express@5.2.1
+    - web server framework, definise rute i middleware
+    - https://www.npmjs.com/package/express
+
+npm install mongoose@9.1.5
+    - ODM sloj ka MongoDB (seme, modeli, upiti)
+    - https://www.npmjs.com/package/mongoose
+
+npm install mongodb@7.0.0
+    - zvanicni MongoDB drajver (koristi ga mongoose ispod haube)
+    - https://www.npmjs.com/package/mongodb
+
+npm install bcryptjs@3.0.3
+    - hesiranje i provjera korisnickih lozinki
+    - https://www.npmjs.com/package/bcryptjs
+
+npm install multer@2.2.0
+    - parsiranje multipart/form-data zahtjeva i cuvanje
+      uploadovanih fajlova (profilne slike, slike proizvoda, JSON uvoz)
+    - https://www.npmjs.com/package/multer
+
+npm install cors@2.8.5
+    - dozvoljava zahtjeve sa frontenda koji radi na drugom portu
+    - https://www.npmjs.com/package/cors
+
+npm install dotenv@17.4.2
+    - ucitava tajne kljuceve (Stripe) iz .env fajla
+    - https://www.npmjs.com/package/dotenv
+
+npm install nodemailer@9.1.1
+    - slanje e-mail poruka (reset lozinke, faktura, najava otvorene
+      javne nabavke stamparijama)
+    - https://www.npmjs.com/package/nodemailer
+
+npm install pdfkit@0.20.2
+    - generisanje PDF faktura na serveru
+    - https://www.npmjs.com/package/pdfkit
+
+npm install stripe@22.6.1
+    - komunikacija sa Stripe Test Mode servisom placanja
+    - https://www.npmjs.com/package/stripe
+
+npm install --save-dev typescript@5.9
+    - kompajlira TypeScript kod u JavaScript
+    - https://www.npmjs.com/package/typescript
+
+npm install --save-dev @types/express@5.0.6 @types/cors@2.8.19 @types/multer@2.2.0 @types/node@25.0.9 @types/nodemailer@8.0.1 @types/pdfkit@0.17.6
+    - TypeScript definicije tipova za gornje biblioteke
+      (samo za razvoj, ne uticu na runtime kod)
+    - https://www.npmjs.com/~types
+
+
+FRONTEND (Angular 20) - pokrenuti u frontend/ folderu
+--------------------------------------------------------------------
+
+npm install @angular/core@20.3.0 @angular/common@20.3.0 @angular/forms@20.3.0 @angular/router@20.3.0 @angular/compiler@20.3.0 @angular/platform-browser@20.3.0
+    - Angular framework (komponente, rutiranje, forme, DOM rendering)
+    - https://angular.dev
+
+npm install rxjs@7.8.0
+    - reaktivni tokovi podataka (Observable), koristi ih Angular HttpClient
+    - https://www.npmjs.com/package/rxjs
+
+npm install zone.js@0.15.0
+    - automatska detekcija promjena u Angularu
+    - https://www.npmjs.com/package/zone.js
+
+npm install tslib@2.3.0
+    - pomocne TypeScript funkcije, koristi ih Angular kompajler
+    - https://www.npmjs.com/package/tslib
+
+npm install chart.js@4.5.1
+    - crtanje grafikona (bar/pita/linijski) u statistikama admina
+    - https://www.npmjs.com/package/chart.js
+
+npm install jspdf@4.2.1
+    - generisanje PDF izvjestaja o licitacijama na klijentskoj strani
+    - https://www.npmjs.com/package/jspdf
+
+npm install --save-dev @angular/cli@20.3.6 @angular/build@20.3.6 @angular/compiler-cli@20.3.0 typescript@5.9.2
+    - build alati (ng serve / ng build), generisani automatski
+      prilikom kreiranja Angular projekta
+    - https://angular.dev/tools/cli
+
+npm install --save-dev @types/jasmine@5.1.0 jasmine-core@5.9.0 karma@6.4.0 karma-chrome-launcher@3.2.0 karma-coverage@2.2.0 karma-jasmine@5.1.0 karma-jasmine-html-reporter@2.1.0
+    - test-runner i test-framework (generisani automatski,
+      koriste se za unit testove komponenti)
+    - https://jasmine.github.io / https://karma-runner.github.io
+
+
+EKSTERNI SERVISI / API (ucitani preko CDN-a, ne kao npm zavisnost)
+--------------------------------------------------------------------
+
+Stripe.js v3
+    - mountuje sigurna polja za unos broja kartice, datuma isticanja
+      i CVC koda direktno u pretrazivacu (podaci kartice nikad ne
+      prolaze kroz nas server)
+    - ucitano u frontend/src/index.html: <script src="https://js.stripe.com/v3/">
+    - https://docs.stripe.com/js
+
+Google Maps Embed
+    - prikazuje interaktivnu mapu lokacije stamparije u detaljima
+      proizvoda, putem iframe embed-a (bez potrebe za API kljucem)
+    - https://developers.google.com/maps/documentation/embed/embedding-map
+
+
+NAPOMENA
+--------------------------------------------------------------------
+U praksi je najjednostavnije pokrenuti samo:
+    cd backend  && npm install
+    cd frontend && npm install
+sto ce automatski instalirati sve gore navedene biblioteke odjednom,
+tacno u verzijama navedenim u prilozenim package.json / package-lock.json
+fajlovima. Pojedinacne komande iznad sluze samo kao pregledan spisak.

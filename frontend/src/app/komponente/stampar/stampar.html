@@ -1,0 +1,585 @@
+<div class="printer-page">
+  <header class="dashboard-hero dashboard-hero--printer">
+    <div>
+      <span class="section-kicker">ŠTAMPARIJA</span>
+      <h1 class="page-title">{{korisnik.nazivInstitucije || "Panel štamparije"}}</h1>
+      <p class="page-subtitle">Upravljajte profilom, proizvodima, lagerom, narudžbinama i otvorenim licitacijama.</p>
+    </div>
+    <div class="dashboard-hero__identity">
+      @if (korisnik.slika != "") {
+        <img class="dashboard-hero__avatar" [src]="'http://localhost:4000/uploads/' + korisnik.slika" [alt]="korisnik.nazivInstitucije">
+      }
+      <div>
+        <strong>{{korisnik.kor_ime}}</strong>
+        <span>{{korisnik.grad}}</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="page-nav page-nav--dashboard" aria-label="Meni štamparije">
+    <a class="active-link" href="#profil" (click)="skociNaSekciju('profil', $event)">Profil</a>
+    <a href="#novi-proizvod" (click)="skociNaSekciju('novi-proizvod', $event)">Novi proizvod</a>
+    <a href="#uvoz-json" (click)="skociNaSekciju('uvoz-json', $event)">Uvoz iz JSON</a>
+    <a href="#moji-proizvodi" (click)="skociNaSekciju('moji-proizvodi', $event)">Proizvodi</a>
+    <a href="#narudzbine" (click)="skociNaSekciju('narudzbine', $event)">Narudžbine</a>
+    <a href="#licitacije" (click)="skociNaSekciju('licitacije', $event)">Licitacije</a>
+    <a href="#rezultati-licitacija" (click)="skociNaSekciju('rezultati-licitacija', $event)">Rezultati licitacija</a>
+    <button class="nav-logout" (click)="odjava()">Odjava</button>
+  </nav>
+
+  <section class="dashboard-stats printer-stats" aria-label="Pregled štamparije">
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Proizvodi</span>
+      <strong>{{proizvodi.length}}</strong>
+      <small>artikala u ponudi</small>
+    </article>
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Narudžbine</span>
+      <strong>{{narudzbine.length}}</strong>
+      <small>evidentiranih narudžbina</small>
+    </article>
+    <article class="dashboard-stat">
+      <span class="dashboard-stat__label">Licitacije</span>
+      <strong>{{javneNabavke.length}}</strong>
+      <small>otvorenih nabavki</small>
+    </article>
+  </section>
+
+  <p class="message">{{poruka}}</p>
+
+<section id="profil" class="card section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Profil štamparije</h2>
+      <p class="section-note">Korisničko ime nije moguće mijenjati. Profilna slika mora biti 100–250 px.</p>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    <div class="profile-photo-wrap">
+      @if (korisnik.slika != "") {
+        <img
+          class="profile-photo"
+          [src]="'http://localhost:4000/uploads/' + korisnik.slika"
+          [alt]="korisnik.nazivInstitucije"
+        >
+      }
+      <strong>{{korisnik.nazivInstitucije}}</strong>
+      <span class="badge">{{korisnik.kor_ime}}</span>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="stIme">Ime odgovornog lica</label>
+        <input id="stIme" [(ngModel)]="korisnik.ime">
+      </div>
+
+      <div class="form-field">
+        <label for="stPrezime">Prezime odgovornog lica</label>
+        <input id="stPrezime" [(ngModel)]="korisnik.prezime">
+      </div>
+
+      <div class="form-field">
+        <label for="stTelefon">Telefon</label>
+        <input id="stTelefon" [(ngModel)]="korisnik.telefon">
+      </div>
+
+      <div class="form-field">
+        <label for="stEmail">E-mail</label>
+        <input id="stEmail" type="email" [(ngModel)]="korisnik.email">
+      </div>
+
+      <div class="form-field form-field--full">
+        <label for="stNaziv">Naziv štamparije</label>
+        <input id="stNaziv" [(ngModel)]="korisnik.nazivInstitucije">
+      </div>
+
+      <div class="form-field">
+        <label for="stAdresa">Adresa</label>
+        <input id="stAdresa" [(ngModel)]="korisnik.adresa">
+      </div>
+
+      <div class="form-field">
+        <label for="stGrad">Grad</label>
+        <input id="stGrad" [(ngModel)]="korisnik.grad">
+      </div>
+
+      <div class="form-field">
+        <label for="stMaticni">Matični broj</label>
+        <input id="stMaticni" inputmode="numeric" [(ngModel)]="korisnik.maticniBroj">
+      </div>
+
+      <div class="form-field">
+        <label for="stPib">PIB</label>
+        <input id="stPib" inputmode="numeric" [(ngModel)]="korisnik.pib">
+      </div>
+
+      <div class="form-field form-field--full">
+        <label for="stSlika">Nova profilna slika</label>
+        <input
+          id="stSlika"
+          type="file"
+          accept=".jpg,.jpeg,.png,.gif"
+          (change)="izabranaProfilnaSlika($event)"
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" (click)="azurirajProfil()">Sačuvaj profil</button>
+  </div>
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="novi-proizvod" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Dodaj proizvod i usluge</h2>
+      <p class="section-note">Proizvod se dodaje u već postojeću kategoriju i potkategoriju iz baze.</p>
+    </div>
+  </div>
+
+  <div class="split-layout">
+    <div class="form-card">
+      <h3>Podaci proizvoda</h3>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="prSifra">Šifra</label>
+          <input id="prSifra" [(ngModel)]="sifra" placeholder="npr. PR-006">
+        </div>
+
+        <div class="form-field">
+          <label for="prNaziv">Naziv</label>
+          <input id="prNaziv" [(ngModel)]="naziv">
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="prOpis">Opis</label>
+          <textarea id="prOpis" [(ngModel)]="opis"></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="prKat">Kategorija</label>
+          <select id="prKat" [(ngModel)]="kategorija" (change)="promjenaKategorije()">
+            <option value="">Izaberite kategoriju</option>
+            @for (k of kategorije; track k.naziv) {
+              <option [value]="k.naziv">{{k.naziv}}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="prPotkat">Potkategorija</label>
+          <select id="prPotkat" [(ngModel)]="potkategorija">
+            <option value="">Izaberite potkategoriju</option>
+            @for (p of potkategorije; track p) {
+              <option [value]="p">{{p}}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="prCijena">Jedinična cijena (RSD)</label>
+          <input id="prCijena" type="number" min="0" [(ngModel)]="jedinicnaCena">
+        </div>
+
+        <div class="form-field">
+          <label for="prKolicina">Početna količina</label>
+          <input id="prKolicina" type="number" min="0" [(ngModel)]="kolicinaNaLageru">
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="prBoje">Dostupne boje</label>
+          <input id="prBoje" [(ngModel)]="bojeTekst" placeholder="Bijela, Crna, Plava">
+          <span class="field-help">Boje odvojite zarezom.</span>
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="prSlika">Glavna slika proizvoda</label>
+          <input
+            id="prSlika"
+            type="file"
+            accept=".jpg,.jpeg,.png,.gif"
+            (change)="izabranaSlika($event)"
+          >
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="prDodatneSlike">Dodatne slike (najviše 3)</label>
+          <input
+            id="prDodatneSlike"
+            type="file"
+            accept=".jpg,.jpeg,.png,.gif"
+            multiple
+            (change)="izabraneDodatneSlike($event)"
+          >
+          <span class="field-help">Opciono - prikazuju se u galeriji na javnoj stranici sa detaljima proizvoda.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3>Usluge štampe</h3>
+      <p class="muted">Dodajte najmanje jednu uslugu koju nudite za proizvod.</p>
+
+      <div class="form-grid form-grid--single">
+        <div class="form-field">
+          <label for="usTip">Tip štampe</label>
+          <input id="usTip" [(ngModel)]="tipStampe" placeholder="npr. Sublimaciona štampa">
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="usSirina">Maks. širina (mm)</label>
+            <input id="usSirina" type="number" min="1" [(ngModel)]="maxSirinaMm">
+          </div>
+
+          <div class="form-field">
+            <label for="usVisina">Maks. visina (mm)</label>
+            <input id="usVisina" type="number" min="1" [(ngModel)]="maxVisinaMm">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="usCijena">Dodatna cijena po komadu (RSD)</label>
+          <input id="usCijena" type="number" min="0" [(ngModel)]="dodatnaCenaPoKomadu">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" (click)="dodajUslugu()">Dodaj uslugu</button>
+      </div>
+
+      @if (usluge.length > 0) {
+        <div class="mini-list service-list">
+          @for (u of usluge; track $index) {
+            <div class="mini-list__item">
+              <div>
+                <strong>{{u.tipStampe}}</strong>
+                <small>{{u.maxSirinaMm}} × {{u.maxVisinaMm}} mm</small>
+              </div>
+              <span>+ {{u.dodatnaCenaPoKomadu}} RSD</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" (click)="dodajProizvod()">Dodaj proizvod</button>
+  </div>
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="uvoz-json" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Uvoz proizvoda iz JSON fajla</h2>
+      <p class="section-note">Učitajte JSON fajl sa lager listom (format kao u projektnom zadatku), a zatim opciono dodajte sliku za svaki proizvod prije uvoza.</p>
+    </div>
+  </div>
+
+  <div class="form-field form-field--full">
+    <label for="jsonFajl">JSON fajl</label>
+    <input
+      id="jsonFajl"
+      type="file"
+      accept=".json"
+      (change)="ucitajJson($event)"
+    >
+  </div>
+
+  @if (jsonProizvodi.length > 0) {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Šifra</th>
+            <th>Naziv</th>
+            <th>Kategorija</th>
+            <th>Cijena</th>
+            <th>Količina</th>
+            <th>Slika</th>
+            <th>Dodatne slike</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (stavka of jsonProizvodi; track stavka.sifra) {
+            <tr>
+              <td><span class="badge">{{stavka.sifra}}</span></td>
+              <td><strong>{{stavka.naziv}}</strong></td>
+              <td>{{stavka.kategorija}}</td>
+              <td>{{stavka.jedinicnaCena}} RSD</td>
+              <td>{{stavka.kolicinaNaLageru}}</td>
+              <td>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.gif"
+                  (change)="izabranaSlikaZaJson(stavka.sifra, $event)"
+                >
+              </td>
+              <td>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.gif"
+                  multiple
+                  (change)="izabraneDodatneSlikeZaJson(stavka.sifra, $event)"
+                >
+                <span class="field-help">Do 3 slike</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="primary" (click)="uvezi()">Uvezi proizvode</button>
+    </div>
+  }
+
+  <p class="message">{{jsonPoruka}}</p>
+</section>
+
+<section id="moji-proizvodi" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Moji proizvodi</h2>
+      <p class="section-note">Ažurirajte količinu postojećih proizvoda na lageru.</p>
+    </div>
+  </div>
+
+  @if (proizvodi.length > 0) {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Šifra</th>
+            <th>Naziv</th>
+            <th>Kategorija</th>
+            <th>Cijena</th>
+            <th>Količina</th>
+            <th>Akcija</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (proizvod of proizvodi; track proizvod.sifra) {
+            <tr>
+              <td><span class="badge">{{proizvod.sifra}}</span></td>
+              <td><strong>{{proizvod.naziv}}</strong></td>
+              <td>{{proizvod.kategorija}}</td>
+              <td>{{proizvod.jedinicnaCena}} RSD</td>
+              <td class="quantity-cell">
+                <input type="number" min="0" [(ngModel)]="proizvod.kolicinaNaLageru">
+              </td>
+              <td>
+                <button class="secondary" (click)="promijeniKolicinu(proizvod)">Sačuvaj količinu</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @else {
+    <div class="empty-state">Štamparija još nema proizvode.</div>
+  }
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="narudzbine" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Naručeni proizvodi</h2>
+      <p class="section-note">Za narudžbine fizičkih lica dozvoljeni su prelazi „naručeno“ → „plaćeno“ (od strane klijenta) → „u štampi“ → „isporučeno“.</p>
+    </div>
+  </div>
+
+  @if (narudzbine.length > 0) {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID fakture</th>
+            <th>Klijent</th>
+            <th>Proizvodi</th>
+            <th>Ukupan iznos</th>
+            <th>Datum</th>
+            <th>Status</th>
+            <th>Akcija</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (narudzbina of narudzbine; track narudzbina.idFakture) {
+            <tr>
+              <td><strong>{{narudzbina.idFakture}}</strong></td>
+              <td>{{narudzbina.kor_ime}}</td>
+              <td>
+                <div class="mini-list mini-list--plain">
+                  @for (proizvod of narudzbina.proizvodi; track $index) {
+                    <div>{{proizvod.naziv}} <span class="muted">× {{proizvod.kolicina}}</span></div>
+                  }
+                </div>
+              </td>
+              <td>{{narudzbina.ukupanIznos}} RSD</td>
+              <td>{{narudzbina.datum}}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.badge--naruceno]="narudzbina.status == 'naruceno'"
+                  [class.badge--placeno]="narudzbina.status == 'placeno'"
+                  [class.badge--u-stampi]="narudzbina.status == 'u stampi'"
+                  [class.badge--isporuceno]="narudzbina.status == 'isporuceno'"
+                  [class.badge--primljeno]="narudzbina.status == 'primljeno'"
+                >
+                  {{narudzbina.status}}
+                </span>
+              </td>
+              <td>
+                @if (narudzbina.status == "naruceno") {
+                  <span class="muted">Čeka se plaćanje</span>
+                }
+                @if (narudzbina.status == "placeno") {
+                  <button class="primary" (click)="promijeniStatus(narudzbina.idFakture, 'u stampi')">U štampi</button>
+                }
+
+                @if (narudzbina.status == "u stampi") {
+                  <button class="success" (click)="promijeniStatus(narudzbina.idFakture, 'isporuceno')">Isporučeno</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @else {
+    <div class="empty-state">Trenutno nema narudžbina.</div>
+  }
+
+  <p class="message">{{poruka}}</p>
+</section>
+
+<section id="licitacije" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Otvorene licitacije</h2>
+      <p class="section-note">Za jednu javnu nabavku štamparija šalje jednu ukupnu ponudu za sve tražene proizvode.</p>
+    </div>
+  </div>
+
+  @if (javneNabavke.length > 0) {
+    <div class="stack">
+      @for (nabavka of javneNabavke; track nabavka.id) {
+        <article class="tender-card">
+          <div class="tender-card__header">
+            <div>
+              <span class="badge">{{nabavka.id}}</span>
+              <h3>Javna nabavka</h3>
+              <p class="muted">Raspisana: {{nabavka.datumVrijeme | date:'dd.MM.yyyy. HH:mm'}}</p>
+            </div>
+            <span class="badge badge--warning">otvorena</span>
+          </div>
+
+          <div class="mini-list">
+            @for (proizvod of nabavka.proizvodi; track $index) {
+              <div class="mini-list__item">
+                <strong>{{proizvod.naziv}}</strong>
+                <span>{{proizvod.kolicina}} kom.</span>
+              </div>
+            }
+          </div>
+
+          @if (mojaPonuda(nabavka); as poslata) {
+            <p class="message">
+              Poslata Vaša ponuda: <strong>{{poslata.ukupanIznos}} RSD</strong>. Čeka se isteka roka od 10 minuta.
+            </p>
+          }
+          @else {
+            <div class="inline-fields tender-offer">
+              <div class="form-field">
+                <label [for]="'ponuda-' + nabavka.id">Ukupan iznos ponude (RSD)</label>
+                <input
+                  [id]="'ponuda-' + nabavka.id"
+                  type="number"
+                  min="1"
+                  [(ngModel)]="iznosiPonuda[nabavka.id]"
+                >
+              </div>
+              <button class="primary" (click)="posaljiPonudu(nabavka)">Pošalji ponudu</button>
+            </div>
+
+            <p class="message">{{ponudaPoruke[nabavka.id]}}</p>
+          }
+        </article>
+      }
+    </div>
+  }
+  @else {
+    <div class="empty-state">Trenutno nema otvorenih javnih nabavki.</div>
+  }
+</section>
+
+<section id="rezultati-licitacija" class="section section-anchor">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Rezultati licitacija</h2>
+      <p class="section-note">Nakon isteka roka za licitaciju, ovdje se pojavljuje ishod i izvještaj za preuzimanje.</p>
+    </div>
+  </div>
+
+  @if (zavrseneNabavke.length > 0) {
+    <div class="stack">
+      @for (nabavka of zavrseneNabavke; track nabavka.id) {
+        <article class="tender-card">
+          <div class="tender-card__header">
+            <div>
+              <span class="badge">{{nabavka.id}}</span>
+              <h3>Javna nabavka</h3>
+              <p class="muted">Raspisana: {{nabavka.datumVrijeme | date:'dd.MM.yyyy. HH:mm'}}</p>
+            </div>
+            @if (jesamPobjednik(nabavka)) {
+              <span class="badge badge--success">Dobili ste nabavku</span>
+            }
+            @else {
+              <span class="badge">Niste dobili nabavku</span>
+            }
+          </div>
+
+          <div class="mini-list">
+            @for (proizvod of nabavka.proizvodi; track $index) {
+              <div class="mini-list__item">
+                <strong>{{proizvod.naziv}}</strong>
+                <span>{{proizvod.kolicina}} kom.</span>
+              </div>
+            }
+          </div>
+
+          <p class="message">
+            Vaša ponuda: <strong>{{mojaPonuda(nabavka)?.ukupanIznos}} RSD</strong>
+            @if (nazivPobjednika(nabavka) != '') {
+              — pobjednička štamparija: <strong>{{nazivPobjednika(nabavka)}}</strong>
+            }
+          </p>
+
+          <div class="actions actions--compact">
+            <button class="primary" (click)="preuzmiIzvjestaj(nabavka)">Preuzmi izvještaj (PDF)</button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+  @else {
+    <div class="empty-state">Još uvijek nemate rezultata licitacija.</div>
+  }
+</section>
+</div>

@@ -1,0 +1,58 @@
+<div class="auth-page">
+  <nav class="page-nav page-nav--public" aria-label="Javni meni">
+    <a href="/">Početna</a>
+    <a href="/login">Prijava</a>
+    <a href="/registracija">Registracija</a>
+  </nav>
+
+  <section class="auth-layout">
+    <div class="auth-visual">
+      <span class="auth-visual__eyebrow">PRINTING HOUSE</span>
+      <h1>Postavite novu lozinku</h1>
+      <p>Lozinka mora imati 8-12 znakova, počinje slovom i sadrži veliko slovo, broj i specijalni znak.</p>
+    </div>
+
+    <div class="auth-card auth-card--elevated">
+      <div class="auth-card__icon">PH</div>
+      <span class="section-kicker">Nova lozinka</span>
+      <h2>Poništavanje lozinke</h2>
+
+      @if (stanjeLinka == 'provjera') {
+        <p class="message">Provjera linka...</p>
+      }
+
+      @else if (stanjeLinka == 'nevazi') {
+        <p class="message">
+          Ovaj link za poništavanje lozinke više ne važi (iskorišćen je ili je istekao rok od 5 minuta). Zatražite novi na strani za prijavljivanje.
+        </p>
+
+        <div class="actions auth-card__actions">
+          <a class="btn btn-primary" href="/zaboravljena-lozinka">Zatraži novi link</a>
+        </div>
+      }
+
+      @else {
+
+        @if (!uspjesno) {
+          <div class="form-grid form-grid--single">
+            <div class="form-field">
+              <label for="novaLozinkaPolje">Nova lozinka</label>
+              <input id="novaLozinkaPolje" type="password" [(ngModel)]="novaLozinka" placeholder="8-12 znakova">
+            </div>
+          </div>
+
+          <div class="actions auth-card__actions">
+            <button class="primary" (click)="postaviLozinku()">Postavi novu lozinku</button>
+          </div>
+        }
+        @else {
+          <div class="actions auth-card__actions">
+            <a class="btn btn-primary" href="/login">Idi na prijavu</a>
+          </div>
+        }
+
+        <p class="message">{{poruka}}</p>
+      }
+    </div>
+  </section>
+</div>

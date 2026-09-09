@@ -1,0 +1,48 @@
+{
+  "stampaorijaId": "stampa_001",
+  "nazivStamparije": "Copy Studio Kumanovska",
+  "proizvodi": [
+    {
+      "sifra": "PR-021",
+      "naziv": "Muška Majica Kratkih Rukava",
+      "opis": "Pamučna majica kratkih rukava, pogodna za direktnu štampu i preslikač, dostupna u više boja.",
+      "kategorija": "Kreativne štampe",
+      "potkategorija": "Štampa na majicama",
+      "jedinicnaCena": 1100.00,
+      "kolicinaNaLageru": 180,
+      "dostupneBoje": ["Bijela", "Crna", "Siva"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-22",
+          "tipStampe": "Direktna štampa na tekstil (DTG)",
+          "dodatnaCenaPoKomadu": 320.00,
+          "maxSirinaMm": 300,
+          "maxVisinaMm": 400
+        }
+      ]
+    },
+    {
+      "sifra": "PR-022",
+      "naziv": "Rollup Baner 100x200cm",
+      "opis": "Samostojeći roll-up baner sa mehanizmom za lako sklapanje, pogodan za sajmove i prezentacije.",
+      "kategorija": "Štampa velikih formata",
+      "potkategorija": "Rollups",
+      "jedinicnaCena": 5200.00,
+      "kolicinaNaLageru": 15,
+      "dostupneBoje": ["Bijela"],
+      "slikaUrl": "",
+      "dodatneSlike": [],
+      "uslugeStampe": [
+        {
+          "idUsluge": "USL-23",
+          "tipStampe": "Eko-solventna štampa visoke rezolucije",
+          "dodatnaCenaPoKomadu": 780.00,
+          "maxSirinaMm": 1000,
+          "maxVisinaMm": 2000
+        }
+      ]
+    }
+  ]
+}

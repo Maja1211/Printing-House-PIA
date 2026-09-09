@@ -1,0 +1,237 @@
+<header class="dashboard-hero dashboard-hero--procurement">
+
+  <div>
+
+    <span class="section-kicker">JAVNE NABAVKE</span>
+
+    <h1 class="page-title">
+      Javne nabavke
+    </h1>
+
+    <p class="page-subtitle">
+      Pregled javnih nabavki pravnog lica,
+      pristiglih ponuda i rezultata licitacije.
+    </p>
+
+  </div>
+
+  <div class="dashboard-hero__mini-card">
+    <strong>{{nabavke.length}}</strong>
+    <span>evidentiranih nabavki</span>
+  </div>
+
+</header>
+
+
+<nav
+  class="page-nav page-nav--dashboard"
+  aria-label="Klijentski meni"
+>
+
+  <a href="/klijent">
+    Profil
+  </a>
+
+  <a href="/pretraga-klijent">
+    Proizvodi
+  </a>
+
+  <a href="/korpa">
+    Korpa
+  </a>
+
+  <a href="/arhiva-klijent">
+    Arhiva
+  </a>
+
+  <a
+    class="active-link"
+    href="/javne-nabavke"
+  >
+    Javne nabavke
+  </a>
+
+  <button class="nav-logout" (click)="odjava()">
+    Odjava
+  </button>
+
+</nav>
+
+
+@if (nabavke.length > 0) {
+
+  <div class="stack">
+
+    @for (
+      nabavka of nabavke;
+      track nabavka.id
+    ) {
+
+      <article class="tender-card">
+
+        <div class="tender-card__header">
+
+          <div>
+
+            <span class="badge">
+              {{nabavka.id}}
+            </span>
+
+            <h3>
+              Javna nabavka
+            </h3>
+
+            <p class="muted">
+              Raspisana:
+              {{nabavka.datumVrijeme | date:'dd.MM.yyyy. HH:mm'}}
+            </p>
+
+          </div>
+
+
+          <span
+            class="badge"
+            [class.badge--warning]="nabavka.status == 'otvorena'"
+            [class.badge--success]="nabavka.status == 'zavrsena'"
+          >
+            {{nabavka.status}}
+          </span>
+
+        </div>
+
+
+        <div class="split-layout">
+
+          <div>
+
+            <h4>
+              Traženi proizvodi
+            </h4>
+
+
+            <div class="mini-list">
+
+              @for (
+                proizvod of nabavka.proizvodi;
+                track $index
+              ) {
+
+                <div class="mini-list__item">
+
+                  <strong>
+                    {{proizvod.naziv}}
+                  </strong>
+
+                  <span>
+                    {{proizvod.kolicina}} kom.
+                  </span>
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <h4>
+              Pristigle ponude
+            </h4>
+
+
+            @if (nabavka.ponude.length > 0) {
+
+              <div class="mini-list">
+
+                @for (
+                  ponuda of nabavka.ponude;
+                  track $index
+                ) {
+
+                  <div class="mini-list__item">
+
+                    <strong>
+                      {{ponuda.nazivStamparije}}
+                    </strong>
+
+                    <span>
+                      {{ponuda.ukupanIznos}} RSD
+                    </span>
+
+                  </div>
+
+                }
+
+              </div>
+
+            }
+
+            @else {
+
+              <p class="muted">
+                Još nema pristiglih ponuda.
+              </p>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        @if (nabavka.status == "zavrsena") {
+
+          <div class="result-box">
+
+            @if (nabavka.pobjednik != "") {
+
+              <strong>
+                Izabrana štamparija:
+              </strong>
+
+              {{nazivPobjednika(nabavka)}}
+
+            }
+
+            @else {
+
+              <strong>
+                Nabavka je završena bez validne ponude.
+              </strong>
+
+            }
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="primary"
+              (click)="preuzmiIzvjestaj(nabavka)"
+            >
+              Preuzmi PDF izvještaj
+            </button>
+
+          </div>
+
+        }
+
+      </article>
+
+    }
+
+  </div>
+
+}
+
+@else {
+
+  <div class="empty-state">
+    Još nema javnih nabavki.
+  </div>
+
+}
